@@ -274,12 +274,11 @@ const TipeSoalPage = () => {
                 </div>
                 <div>
                   <label className="block mb-1 text-slate-700">
-                    Passing Grade (%)
+                    Passing Grade (nilai minimum)
                   </label>
                   <input
                     type="number"
                     min={0}
-                    max={100}
                     className="w-full px-2 py-1.5 rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-primary-500"
                     {...register("passing_grade", {
                       required: "Passing grade wajib diisi",

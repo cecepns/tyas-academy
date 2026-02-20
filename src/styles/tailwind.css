@@ -8,3 +8,23 @@ body {
   @apply font-sans text-slate-800 bg-slate-50;
 }
 
+/* Swiper testimonial – pagination */
+.swiper-pagination-bullet-active {
+  background: #7367f0 !important;
+  transform: scale(1.2);
+}
+.swiper-pagination-bullet {
+  background: #c4b5fd;
+  transition: transform 0.2s ease;
+}
+
+/* Testimonial cards – equal height */
+.testimoni-swiper .swiper-slide {
+  height: auto;
+  display: flex;
+}
+.testimoni-swiper .swiper-slide > div {
+  flex: 1;
+  width: 100%;
+}
+

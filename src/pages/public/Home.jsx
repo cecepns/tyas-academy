@@ -1,14 +1,21 @@
 import { Link } from "react-router-dom";
-import { CheckCircle2, Clock, ListChecks, Shield, Users } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Clock, ListChecks, Shield, Users } from "lucide-react";
 import heroImg from "../../assets/hero.png";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import api from "../../utils/apiClient";
 import getFileBase from "../../utils/fileBase";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const Home = () => {
   const [overview, setOverview] = useState(null);
   const [testimoni, setTestimoni] = useState([]);
   const [paket, setPaket] = useState([]);
+  const testimoniPrevRef = useRef(null);
+  const testimoniNextRef = useRef(null);
 
   const fileBase = useMemo(() => getFileBase(), []);
 
@@ -262,7 +269,7 @@ const Home = () => {
                   className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col"
                 >
                   {p.cover_image && (
-                    <div className="h-32 w-full overflow-hidden">
+                    <div className="h-44 w-full overflow-hidden">
                       <img
                         src={`${fileBase}${p.cover_image}`}
                         alt={p.nama_paket}
@@ -315,36 +322,75 @@ const Home = () => {
                 Lihat semua
               </Link>
             </div>
-            <div className="grid md:grid-cols-3 gap-4">
-              {testimoni.slice(0, 3).map((t) => (
-                <div
-                  key={t.id}
-                  className="bg-white rounded-xl border border-slate-100 p-4"
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    {t.foto ? (
-                      <div className="w-9 h-9 rounded-full overflow-hidden border border-slate-100 bg-slate-50">
-                        <img
-                          src={`${fileBase}${t.foto}`}
-                          alt={t.nama}
-                          className="w-full h-full object-cover"
-                        />
+            <div className="relative pt-16 md:pt-0 px-4 md:px-6">
+              <button
+                ref={testimoniPrevRef}
+                type="button"
+                className="absolute top-2 left-1/2 -translate-x-14 md:left-0 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm"
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
+              </button>
+              <button
+                ref={testimoniNextRef}
+                type="button"
+                className="absolute top-2 left-1/2 translate-x-2 md:left-auto md:right-0 md:top-1/2 md:translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm"
+                aria-label="Next testimonial"
+              >
+                <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
+              </button>
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={16}
+                slidesPerView={1}
+                breakpoints={{
+                  640: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+                navigation={{
+                  prevEl: testimoniPrevRef.current,
+                  nextEl: testimoniNextRef.current,
+                }}
+                onBeforeInit={(swiper) => {
+                  swiper.params.navigation.prevEl = testimoniPrevRef.current;
+                  swiper.params.navigation.nextEl = testimoniNextRef.current;
+                }}
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 5000, disableOnInteraction: false }}
+                loop
+                className="testimoni-swiper !pb-12"
+              >
+              {testimoni.slice(0, 6).map((t, idx) => (
+                <SwiperSlide key={idx.toString()}>
+                  <div className="bg-white rounded-xl border border-slate-100 p-4 h-full flex flex-col min-h-[180px]">
+                    <div className="flex items-center gap-3 mb-3">
+                      {t.foto ? (
+                        <div className="w-9 h-9 flex-shrink-0 rounded-full overflow-hidden border border-slate-100 bg-slate-50">
+                          <img
+                            src={`${fileBase}${t.foto}`}
+                            alt={t.nama}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full bg-primary-100 text-primary-700">
+                          <span className="text-xs font-semibold leading-none select-none">
+                            {t.nama?.[0]}
+                          </span>
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="text-base font-medium text-slate-800 truncate">
+                          {t.nama}
+                        </p>
+                        <p className="text-xs text-amber-500">Peserta</p>
                       </div>
-                    ) : (
-                      <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center text-xs font-semibold text-primary-700">
-                        {t.nama?.[0]}
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-base font-medium text-slate-800">
-                        {t.nama}
-                      </p>
-                      <p className="text-xs text-amber-500">Peserta</p>
                     </div>
+                    <p className="text-base text-slate-600 leading-relaxed flex-1">{t.testimoni}</p>
                   </div>
-                  <p className="text-base text-slate-600 leading-relaxed">{t.testimoni}</p>
-                </div>
+                </SwiperSlide>
               ))}
+              </Swiper>
             </div>
           </div>
         )}

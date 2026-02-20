@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   BookOpen,
   CheckCircle2,
   GraduationCap,
   Headphones,
   ListChecks,
+  ShoppingBag,
   Video,
   Users,
 } from "lucide-react";
@@ -147,7 +149,7 @@ const Layanan = () => {
                   className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col"
                 >
                   {p.cover_image && (
-                    <div className="h-32 w-full overflow-hidden">
+                    <div className="h-44 w-full overflow-hidden">
                       <img
                         src={`${fileBase}${p.cover_image}`}
                         alt={p.nama_paket}
@@ -169,10 +171,17 @@ const Layanan = () => {
                         {p.fitur_paket}
                       </p>
                     )}
-                    <div className="mt-3 flex items-center justify-between">
+                    <div className="mt-auto pt-3 flex items-center justify-between gap-2">
                       <p className="text-base font-semibold text-primary-600">
                         Rp {p.harga?.toLocaleString?.("id-ID") ?? p.harga}
                       </p>
+                      <Link
+                        to="/user/paket"
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors"
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                        Beli Paket
+                      </Link>
                     </div>
                   </div>
                 </div>

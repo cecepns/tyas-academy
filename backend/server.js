@@ -2077,7 +2077,7 @@ app.post(
         });
       }
       const percentage = maxScore ? (totalScore / maxScore) * 100 : 0;
-      const lulus = percentage >= passingGrade;
+      const lulus = totalScore >= passingGrade;
       const details = Array.from(perQuestion.values()).map((q) => {
         const correct = q.opsi.find((o) => o.benar);
         return {

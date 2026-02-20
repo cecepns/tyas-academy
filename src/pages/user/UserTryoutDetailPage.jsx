@@ -123,7 +123,7 @@ const UserTryoutDetailPage = () => {
             Durasi pengerjaan: {tryout.durasi} menit.{" "}
             {typeof tryout.passingGrade === "number" && (
               <span className="ml-1">
-                (Passing grade: {tryout.passingGrade}%)
+                (Passing grade: {tryout.passingGrade})
               </span>
             )}
           </p>
@@ -253,7 +253,7 @@ const UserTryoutDetailPage = () => {
               Persentase: {result.percentage?.toFixed(2)}%
             </p>
             <p className="text-slate-600">
-              Passing grade: {result.passingGrade}%
+              Passing grade: {result.passingGrade}
             </p>
             <p
               className={`mt-1 font-semibold ${
