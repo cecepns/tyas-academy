@@ -130,7 +130,7 @@ const TestimoniPage = () => {
           <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Testimoni
           </h1>
-          <p className="text-sm md:text-base text-slate-500 mt-1">
+          <p className="text-base text-slate-500 mt-1">
             Atur nama, foto, isi testimoni, dan status tampil.
           </p>
         </div>

@@ -145,7 +145,7 @@ const BimbelPage = () => {
           <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Bimbel
           </h1>
-          <p className="text-sm md:text-base text-slate-500 mt-1">
+          <p className="text-base text-slate-500 mt-1">
             Atur judul, slug, deskripsi, cover, link meeting, dan catatan.
           </p>
         </div>

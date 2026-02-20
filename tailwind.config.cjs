@@ -3,6 +3,9 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Public Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
       colors: {
         primary: {
           50: "#eff6ff",

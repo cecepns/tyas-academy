@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Clock3 } from "lucide-react";
 import api from "../../utils/apiClient";
 import { useToast } from "../../components/common/ToastContext";
@@ -37,7 +37,7 @@ const UserTryoutDetailPage = () => {
       } catch (e) {
         show(
           "error",
-          e.response?.data?.message || "Gagal memuat detail tryout"
+          e.response?.data?.message || "Gagal memuat detail tryout",
         );
       } finally {
         setLoading(false);
@@ -92,7 +92,7 @@ const UserTryoutDetailPage = () => {
     } catch (e) {
       show(
         "error",
-        e.response?.data?.message || "Gagal mengirim jawaban tryout"
+        e.response?.data?.message || "Gagal mengirim jawaban tryout",
       );
     } finally {
       setSubmitting(false);
@@ -109,12 +109,17 @@ const UserTryoutDetailPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             {tryout.judul_tryout}
           </h1>
-          <p className="text-sm md:text-base text-slate-500 mt-1">
+          {tryout.deskripsi && (
+            <p className="text-base text-slate-600 max-w-2xl leading-relaxed">
+              {tryout.deskripsi}
+            </p>
+          )}
+          <p className="text-base text-slate-500 mt-1">
             Durasi pengerjaan: {tryout.durasi} menit.{" "}
             {typeof tryout.passingGrade === "number" && (
               <span className="ml-1">
@@ -140,10 +145,6 @@ const UserTryoutDetailPage = () => {
         )}
       </div>
 
-      {tryout.deskripsi && (
-        <p className="text-sm md:text-base text-slate-600 max-w-2xl leading-relaxed">{tryout.deskripsi}</p>
-      )}
-
       {soal.length > 0 ? (
         <div className="space-y-4">
           {(() => {
@@ -163,7 +164,7 @@ const UserTryoutDetailPage = () => {
                   </p>
                 </div>
                 <div
-                  className="prose prose-sm max-w-none mb-3"
+                  className="prose prose-sm max-w-none mb-3 !text-xl"
                   dangerouslySetInnerHTML={{ __html: s.soal }}
                 />
                 <div className="space-y-2">
@@ -182,12 +183,8 @@ const UserTryoutDetailPage = () => {
                         }
                       />
                       <span className="text-slate-700">
-                        <span className="font-semibold mr-1">
-                          {o.label}.
-                        </span>
-                        <span
-                          dangerouslySetInnerHTML={{ __html: o.konten }}
-                        />
+                        <span className="font-semibold mr-1 text-lg">{o.label}.</span>
+                        <span className="text-lg" dangerouslySetInnerHTML={{ __html: o.konten }} />
                       </span>
                     </label>
                   ))}
@@ -200,9 +197,7 @@ const UserTryoutDetailPage = () => {
             <button
               type="button"
               disabled={currentIndex === 0}
-              onClick={() =>
-                setCurrentIndex((idx) => Math.max(0, idx - 1))
-              }
+              onClick={() => setCurrentIndex((idx) => Math.max(0, idx - 1))}
               className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
             >
               Sebelumnya
@@ -212,24 +207,24 @@ const UserTryoutDetailPage = () => {
                 type="button"
                 disabled={currentIndex === soal.length - 1}
                 onClick={() =>
-                  setCurrentIndex((idx) =>
-                    Math.min(soal.length - 1, idx + 1)
-                  )
+                  setCurrentIndex((idx) => Math.min(soal.length - 1, idx + 1))
                 }
                 className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
               >
                 Berikutnya
               </button>
-              {currentIndex === soal.length - 1 && remaining !== 0 && !result && (
-                <button
-                  type="button"
-                  onClick={() => handleSubmit(false)}
-                  disabled={submitting}
-                  className="px-5 py-2 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 disabled:opacity-60"
-                >
-                  {submitting ? "Mengirim..." : "Kirim Jawaban"}
-                </button>
-              )}
+              {currentIndex === soal.length - 1 &&
+                remaining !== 0 &&
+                !result && (
+                  <button
+                    type="button"
+                    onClick={() => handleSubmit(false)}
+                    disabled={submitting}
+                    className="px-5 py-2 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 disabled:opacity-60"
+                  >
+                    {submitting ? "Mengirim..." : "Kirim Jawaban"}
+                  </button>
+                )}
             </div>
           </div>
         </div>
@@ -241,6 +236,14 @@ const UserTryoutDetailPage = () => {
 
       {result && (
         <div className="mt-4 space-y-3">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <Link
+              to={`/user/tryout/${id}`}
+              className="text-sm text-primary-600 hover:text-primary-700 font-medium underline-offset-2 hover:underline"
+            >
+              ← Ke dashboard tryout
+            </Link>
+          </div>
           <div className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm">
             <p className="font-semibold text-slate-900 mb-1">Hasil Tryout</p>
             <p className="text-slate-600">
@@ -263,9 +266,7 @@ const UserTryoutDetailPage = () => {
 
           {Array.isArray(result.details) && result.details.length > 0 && (
             <div className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm space-y-3">
-              <p className="font-semibold text-slate-900">
-                Pembahasan Soal
-              </p>
+              <p className="font-semibold text-slate-900">Pembahasan Soal</p>
               {result.details.map((d, idx) => (
                 <div
                   key={d.bank_soal_id}
@@ -310,4 +311,3 @@ const UserTryoutDetailPage = () => {
 };
 
 export default UserTryoutDetailPage;
-

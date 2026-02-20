@@ -205,7 +205,7 @@ const PaketPage = () => {
           <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Paket
           </h1>
-          <p className="text-sm md:text-base text-slate-500 mt-1">
+          <p className="text-base text-slate-500 mt-1">
             Atur paket bimbel, harga, durasi, fitur, dan konten (bimbel, materi, tryout).
           </p>
         </div>

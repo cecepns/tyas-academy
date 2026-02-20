@@ -1,0 +1,186 @@
+CREATE DATABASE IF NOT EXISTS tyasacademy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE tyasacademy;
+
+-- USERS
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin','user') NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TIPE SOAL
+CREATE TABLE tipe_soal (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  kode_soal VARCHAR(50) NOT NULL UNIQUE,
+  nama_tipe_soal VARCHAR(150) NOT NULL,
+  passing_grade INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- BANK SOAL
+CREATE TABLE bank_soal (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tipe_soal_id INT NOT NULL,
+  soal MEDIUMTEXT NOT NULL,
+  pembahasan MEDIUMTEXT NULL,
+  image_path VARCHAR(255) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_bank_soal_tipe_soal FOREIGN KEY (tipe_soal_id) REFERENCES tipe_soal(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- OPSI JAWABAN
+CREATE TABLE opsi_jawaban (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  bank_soal_id INT NOT NULL,
+  label CHAR(1) NOT NULL,
+  konten MEDIUMTEXT NOT NULL,
+  skor INT NOT NULL DEFAULT 0,
+  benar TINYINT(1) NOT NULL DEFAULT 0,
+  CONSTRAINT fk_opsi_bank_soal FOREIGN KEY (bank_soal_id) REFERENCES bank_soal(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- TRYOUT
+CREATE TABLE tryout (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  judul_tryout VARCHAR(200) NOT NULL,
+  slug VARCHAR(220) NOT NULL UNIQUE,
+  deskripsi MEDIUMTEXT NULL,
+  banner_image VARCHAR(255) NULL,
+  durasi INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TRYOUT SOAL (many-to-many tryout <-> bank_soal)
+CREATE TABLE tryout_soal (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tryout_id INT NOT NULL,
+  bank_soal_id INT NOT NULL,
+  CONSTRAINT fk_tryout_soal_tryout FOREIGN KEY (tryout_id) REFERENCES tryout(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_tryout_soal_bank_soal FOREIGN KEY (bank_soal_id) REFERENCES bank_soal(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- TRYOUT HASIL (riwayat pengerjaan per user)
+CREATE TABLE tryout_hasil (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  tryout_id INT NOT NULL,
+  total_score INT NOT NULL DEFAULT 0,
+  max_score INT NOT NULL DEFAULT 0,
+  percentage DECIMAL(5,2) NOT NULL DEFAULT 0,
+  lulus TINYINT(1) NOT NULL DEFAULT 0,
+  details JSON NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_tryout_hasil_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_tryout_hasil_tryout FOREIGN KEY (tryout_id) REFERENCES tryout(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- MATERI
+CREATE TABLE materi (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  judul_materi VARCHAR(200) NOT NULL,
+  slug VARCHAR(220) NOT NULL UNIQUE,
+  deskripsi MEDIUMTEXT NULL,
+  banner_image VARCHAR(255) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- MATERI KONTEN
+CREATE TABLE materi_konten (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  materi_id INT NOT NULL,
+  tipe_materi ENUM('video_link','pdf_file') NOT NULL,
+  video_link VARCHAR(255) NULL,
+  pdf_file VARCHAR(255) NULL,
+  CONSTRAINT fk_materi_konten_materi FOREIGN KEY (materi_id) REFERENCES materi(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- BIMBEL
+CREATE TABLE bimbel (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  judul_bimbel VARCHAR(200) NOT NULL,
+  slug VARCHAR(220) NOT NULL UNIQUE,
+  deskripsi MEDIUMTEXT NULL,
+  cover_image VARCHAR(255) NULL,
+  link_meeting VARCHAR(255) NOT NULL,
+  catatan_meeting MEDIUMTEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- PAKET
+CREATE TABLE paket (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_paket VARCHAR(200) NOT NULL,
+  slug VARCHAR(220) NOT NULL UNIQUE,
+  harga INT NOT NULL,
+  durasi_aktif INT NOT NULL DEFAULT 0,
+  cover_image VARCHAR(255) NULL,
+  fitur_paket MEDIUMTEXT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- PAKET-BIMBEL (many-to-many)
+CREATE TABLE paket_bimbel (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  paket_id INT NOT NULL,
+  bimbel_id INT NOT NULL,
+  CONSTRAINT fk_paket_bimbel_paket FOREIGN KEY (paket_id) REFERENCES paket(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_paket_bimbel_bimbel FOREIGN KEY (bimbel_id) REFERENCES bimbel(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- PAKET-MATERI
+CREATE TABLE paket_materi (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  paket_id INT NOT NULL,
+  materi_id INT NOT NULL,
+  CONSTRAINT fk_paket_materi_paket FOREIGN KEY (paket_id) REFERENCES paket(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_paket_materi_materi FOREIGN KEY (materi_id) REFERENCES materi(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- PAKET-TRYOUT
+CREATE TABLE paket_tryout (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  paket_id INT NOT NULL,
+  tryout_id INT NOT NULL,
+  CONSTRAINT fk_paket_tryout_paket FOREIGN KEY (paket_id) REFERENCES paket(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_paket_tryout_tryout FOREIGN KEY (tryout_id) REFERENCES tryout(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- KODE PROMO
+CREATE TABLE kode_promo (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  kode_promo VARCHAR(100) NOT NULL UNIQUE,
+  tipe_diskon ENUM('percent','nominal') NOT NULL,
+  nilai_diskon INT NOT NULL,
+  expired_date DATE NOT NULL,
+  kuota INT NULL,
+  minimal_transaksi INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TRANSAKSI
+CREATE TABLE transaksi (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  paket_id INT NOT NULL,
+  harga INT NOT NULL,
+  status ENUM('pending','success','expired') NOT NULL DEFAULT 'pending',
+  tanggal DATETIME NOT NULL,
+  kode_promo_id INT NULL,
+  CONSTRAINT fk_transaksi_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_transaksi_paket FOREIGN KEY (paket_id) REFERENCES paket(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_transaksi_kode_promo FOREIGN KEY (kode_promo_id) REFERENCES kode_promo(id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- TESTIMONI
+CREATE TABLE testimoni (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama VARCHAR(150) NOT NULL,
+  foto VARCHAR(255) NULL,
+  testimoni MEDIUMTEXT NOT NULL,
+  status_tampil TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -42,7 +42,7 @@ const UserTransaksiPage = () => {
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           Riwayat Transaksi
         </h1>
-        <p className="text-sm md:text-base text-slate-500 mt-1">
+        <p className="text-base text-slate-500 mt-1">
           Lihat riwayat pembelian paket bimbel kamu.
         </p>
       </div>

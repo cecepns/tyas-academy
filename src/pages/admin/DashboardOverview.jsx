@@ -50,7 +50,7 @@ const DashboardOverview = () => {
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           Ringkasan Sistem
         </h1>
-        <p className="text-sm md:text-base text-slate-500 mt-1">
+        <p className="text-base text-slate-500 mt-1">
           Pantau performa sistem bimbel online CardioDemy secara sekilas.
         </p>
       </div>

@@ -46,7 +46,7 @@ const UserMateriDetailPage = () => {
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           {materi.judul_materi}
         </h1>
-        <p className="text-sm md:text-base text-slate-500 mt-1">
+        <p className="text-base text-slate-500 mt-1">
           Materi ini berasal dari paket yang sudah kamu beli.
         </p>
       </div>
@@ -62,7 +62,7 @@ const UserMateriDetailPage = () => {
       )}
 
       {materi.deskripsi && (
-        <p className="text-sm md:text-base text-slate-600 max-w-2xl leading-relaxed">{materi.deskripsi}</p>
+        <p className="text-base text-slate-600 max-w-2xl leading-relaxed">{materi.deskripsi}</p>
       )}
 
       {konten.length > 0 && (

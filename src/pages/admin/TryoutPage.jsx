@@ -181,7 +181,7 @@ const TryoutPage = () => {
           <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Try Out
           </h1>
-          <p className="text-sm md:text-base text-slate-500 mt-1">
+          <p className="text-base text-slate-500 mt-1">
             Atur judul, durasi, banner, dan daftar soal tryout.
           </p>
         </div>

@@ -42,7 +42,7 @@ const UserResourcesPage = ({ type }) => {
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           {titleMap[type]}
         </h1>
-        <p className="text-sm md:text-base text-slate-500 mt-1">
+        <p className="text-base text-slate-500 mt-1">
           Daftar {titleMap[type].toLowerCase()} yang bisa kamu akses dari paket
           yang sudah dibeli.
         </p>
@@ -81,7 +81,7 @@ const UserResourcesPage = ({ type }) => {
                     href={b.link_meeting}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-primary-600 underline font-medium"
+                    className="text-primary-600 underline font-medium break-all line-clamp-1"
                   >
                     {b.link_meeting}
                   </a>

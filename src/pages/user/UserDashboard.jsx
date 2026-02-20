@@ -37,13 +37,13 @@ const UserDashboard = () => {
       color: "bg-violet-50 text-violet-700",
       value: (s) => s?.total_tryout,
     },
-    {
-      key: "total_users",
-      label: "Total User",
-      icon: Users,
-      color: "bg-emerald-50 text-emerald-700",
-      value: (s) => s?.total_users,
-    },
+    // {
+    //   key: "total_users",
+    //   label: "Total User",
+    //   icon: Users,
+    //   color: "bg-emerald-50 text-emerald-700",
+    //   value: (s) => s?.total_users,
+    // },
     {
       key: "my_transaksi",
       label: "Transaksi Kamu",
@@ -59,7 +59,7 @@ const UserDashboard = () => {
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           Dashboard Belajar
         </h1>
-        <p className="text-sm md:text-base text-slate-500 mt-1">
+        <p className="text-base text-slate-500 mt-1">
           Akses paket, bimbel, materi, dan tryout yang sudah kamu beli.
         </p>
       </div>

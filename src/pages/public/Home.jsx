@@ -37,7 +37,7 @@ const Home = () => {
       <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
           <div data-aos="fade-right">
-            <p className="text-sm md:text-base uppercase tracking-[0.2em] text-primary-100 mb-3">
+            <p className="text-base uppercase tracking-[0.2em] text-primary-100 mb-3">
               Bimbel Online & Tryout
             </p>
             <h1 className="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
@@ -102,20 +102,20 @@ const Home = () => {
               <span className="text-primary-600">Terpercaya</span> &{" "}
               <span className="text-primary-600">Berkualitas</span>
             </h2>
-            <p className="text-sm md:text-base text-slate-600 mb-4 leading-relaxed">
+            <p className="text-base text-slate-600 mb-4 leading-relaxed">
               CardioDemy hadir sebagai solusi terbaik bagi pejuang NIP dan
               Sekolah Kedinasan. Kami berkomitmen memberikan pendampingan
               belajar yang intensif, update, dan terarah untuk membantumu meraih
               impian menjadi ASN.
             </p>
-            <ul className="space-y-2 text-sm md:text-base text-slate-600 mb-5">
+            <ul className="space-y-2 text-base text-slate-600 mb-5">
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 </span>
                 <div>
-                  <p className="font-medium text-slate-800 text-sm md:text-base">Materi Terupdate</p>
-                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed">
+                  <p className="font-medium text-slate-800 text-base">Materi Terupdate</p>
+                  <p className="text-sm text-slate-500 leading-relaxed">
                     Kisi-kisi sesuai regulasi terbaru untuk CPNS, PPPK, dan
                     Kedinasan.
                   </p>
@@ -126,10 +126,10 @@ const Home = () => {
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 </span>
                 <div>
-                  <p className="font-medium text-slate-800 text-sm md:text-base">
+                  <p className="font-medium text-slate-800 text-base">
                     Pengajar Berpengalaman
                   </p>
-                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed">
+                  <p className="text-sm text-slate-500 leading-relaxed">
                     Dibimbing langsung oleh Kak Tyas dan tim pengajar
                     profesional.
                   </p>
@@ -140,10 +140,10 @@ const Home = () => {
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 </span>
                 <div>
-                  <p className="font-medium text-slate-800 text-sm md:text-base">
+                  <p className="font-medium text-slate-800 text-base">
                     Metode Belajar yang Fun
                   </p>
-                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed">
+                  <p className="text-sm text-slate-500 leading-relaxed">
                     Pembelajaran interaktif, tidak membosankan, dan mudah
                     dipahami.
                   </p>
@@ -152,7 +152,7 @@ const Home = () => {
             </ul>
             <Link
               to="/layanan"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-sm md:text-base font-medium hover:bg-primary-700"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-base font-medium hover:bg-primary-700"
             >
               Pelajari Lebih Lanjut
               <span className="text-base leading-none">→</span>
@@ -174,7 +174,7 @@ const Home = () => {
             <p className="text-base font-semibold text-slate-800 mb-1">
               Bimbel Online
             </p>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed">
+            <p className="text-base text-slate-500 leading-relaxed">
               Ikuti bimbel online langsung bersama Kak Tyas untuk pendampingan
               intensif.
             </p>
@@ -186,7 +186,7 @@ const Home = () => {
             <p className="text-base font-semibold text-slate-800 mb-1">
               Paket Try Out
             </p>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed">
+            <p className="text-base text-slate-500 leading-relaxed">
               Try out sesuai kisi-kisi terbaru untuk persiapan ujian CPNS,
               Sekolah Kedinasan, PPPK, dan UKOM.
             </p>
@@ -198,7 +198,7 @@ const Home = () => {
             <p className="text-base font-semibold text-slate-800 mb-1">
               Video Pembelajaran
             </p>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed">
+            <p className="text-base text-slate-500 leading-relaxed">
               Video interaktif dan menyenangkan yang terhubung langsung ke
               YouTube CardioDemy.
             </p>
@@ -210,7 +210,7 @@ const Home = () => {
             <p className="text-base font-semibold text-slate-800 mb-1">
               Materi PDF &amp; Video
             </p>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed">
+            <p className="text-base text-slate-500 leading-relaxed">
               Materi teks dan video sebagai bahan belajar kapan pun dan di mana
               pun.
             </p>
@@ -222,7 +222,7 @@ const Home = () => {
             <p className="text-base font-semibold text-slate-800 mb-1">
               Komunitas &amp; Testimoni
             </p>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed">
+            <p className="text-base text-slate-500 leading-relaxed">
               Bergabung dengan komunitas dan lihat kisah sukses peserta yang
               lulus bersama CardioDemy.
             </p>
@@ -234,7 +234,7 @@ const Home = () => {
             <p className="text-base font-semibold text-slate-800 mb-1">
               Pendampingan Berkelanjutan
             </p>
-            <p className="text-sm md:text-base text-slate-500 leading-relaxed">
+            <p className="text-base text-slate-500 leading-relaxed">
               Update materi dan bimbingan rutin agar progres belajar tetap
               terarah.
             </p>
@@ -341,7 +341,7 @@ const Home = () => {
                       <p className="text-xs text-amber-500">Peserta</p>
                     </div>
                   </div>
-                  <p className="text-sm md:text-base text-slate-600 leading-relaxed">{t.testimoni}</p>
+                  <p className="text-base text-slate-600 leading-relaxed">{t.testimoni}</p>
                 </div>
               ))}
             </div>

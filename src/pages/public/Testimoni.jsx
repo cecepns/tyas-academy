@@ -22,7 +22,7 @@ const Testimoni = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
       <div className="max-w-2xl mb-8" data-aos="fade-up">
-        <p className="text-sm md:text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
+        <p className="text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
           Testimoni
         </p>
         <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-3">
@@ -40,7 +40,7 @@ const Testimoni = () => {
         data-aos-delay="80"
       >
         {items.length === 0 && (
-          <p className="text-sm md:text-base text-slate-500">
+          <p className="text-base text-slate-500">
             Belum ada testimoni yang ditampilkan.
           </p>
         )}
@@ -71,7 +71,7 @@ const Testimoni = () => {
                 <MessageCircle className="w-4 h-4" />
               </div>
             </div>
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed">{t.testimoni}</p>
+            <p className="text-base text-slate-600 leading-relaxed">{t.testimoni}</p>
           </div>
         ))}
       </div>

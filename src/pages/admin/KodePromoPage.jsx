@@ -137,7 +137,7 @@ const KodePromoPage = () => {
           <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Kode Promo
           </h1>
-          <p className="text-sm md:text-base text-slate-500 mt-1">
+          <p className="text-base text-slate-500 mt-1">
             Atur kode promo, jenis diskon, nilai, kuota, dan minimal transaksi.
           </p>
         </div>

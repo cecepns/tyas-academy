@@ -27,7 +27,7 @@ const Kontak = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 md:py-16">
       <div className="mb-8" data-aos="fade-up">
-        <p className="text-sm md:text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
+        <p className="text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
           Kontak
         </p>
         <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-3">

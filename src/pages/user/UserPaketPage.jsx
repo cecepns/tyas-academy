@@ -93,7 +93,7 @@ const UserPaketPage = () => {
     <div className="space-y-5">
       <div>
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900">Beli Paket</h1>
-        <p className="text-sm md:text-base text-slate-500 mt-1">
+        <p className="text-base text-slate-500 mt-1">
           Pilih paket bimbel, masukkan kode promo, dan lanjutkan ke pembayaran
         </p>
       </div>

@@ -79,7 +79,7 @@ const Layanan = () => {
         className="max-w-2xl mb-10"
         data-aos="fade-up"
       >
-        <p className="text-sm md:text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
+        <p className="text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
           Layanan CardioDemy
         </p>
         <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-3">
@@ -113,7 +113,7 @@ const Layanan = () => {
                 <p className="text-base font-semibold text-slate-800">
                   {item.title}
                 </p>
-                <p className="text-sm md:text-base text-slate-500 mt-1 leading-relaxed">{item.desc}</p>
+                <p className="text-base text-slate-500 mt-1 leading-relaxed">{item.desc}</p>
                 <div className="mt-3 flex flex-wrap gap-2 text-xs md:text-sm text-slate-500">
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-50 border border-slate-100">
                     <CheckCircle2 className="w-3 h-3 text-emerald-500" />
@@ -140,7 +140,7 @@ const Layanan = () => {
           <p className="text-sm text-slate-500">Memuat paket...</p>
         )}
         {!loadingPaket && paket.length === 0 && (
-          <p className="text-sm md:text-base text-slate-500">
+          <p className="text-base text-slate-500">
             Belum ada paket yang tersedia.
           </p>
         )}

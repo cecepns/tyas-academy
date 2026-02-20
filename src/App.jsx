@@ -27,6 +27,7 @@ import UserPaketPage from "./pages/user/UserPaketPage";
 import UserResourcesPage from "./pages/user/UserResourcesPage";
 import UserTransaksiPage from "./pages/user/UserTransaksiPage";
 import UserMateriDetailPage from "./pages/user/UserMateriDetailPage";
+import UserTryoutDashboardPage from "./pages/user/UserTryoutDashboardPage";
 import UserTryoutDetailPage from "./pages/user/UserTryoutDetailPage";
 
 function App() {
@@ -76,6 +77,10 @@ function App() {
               />
               <Route
                 path="/user/tryout/:id"
+                element={<UserTryoutDashboardPage />}
+              />
+              <Route
+                path="/user/tryout/:id/kerjakan"
                 element={<UserTryoutDetailPage />}
               />
               <Route

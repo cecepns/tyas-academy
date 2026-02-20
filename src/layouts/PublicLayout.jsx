@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BookOpen, Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import Logo from '../assets/logo.webp'
+import Logo from "../assets/logo.webp";
 import AOS from "aos";
 
 const PublicLayout = () => {
@@ -25,7 +25,7 @@ const PublicLayout = () => {
 
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-100">
+      <header className="fixed w-full top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-14 h-auto">
@@ -110,17 +110,25 @@ const PublicLayout = () => {
         )}
       </header>
       <main className="flex-1">
-        <Outlet />
+        <div className="pt-14">
+          <Outlet />
+        </div>
       </main>
       <footer className="border-t border-slate-100 bg-white mt-12">
         <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} CardioDemy. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-            <a href="tel:08998843311" className="flex items-center gap-1.5 hover:text-primary-600 transition">
+            <a
+              href="tel:08998843311"
+              className="flex items-center gap-1.5 hover:text-primary-600 transition"
+            >
               <Phone className="w-3.5 h-3.5 shrink-0" />
               <span>08998843311</span>
             </a>
-            <a href="mailto:ask.tyas@gmail.com" className="flex items-center gap-1.5 hover:text-primary-600 transition">
+            <a
+              href="mailto:ask.tyas@gmail.com"
+              className="flex items-center gap-1.5 hover:text-primary-600 transition"
+            >
               <Mail className="w-3.5 h-3.5 shrink-0" />
               <span>ask.tyas@gmail.com</span>
             </a>
@@ -146,4 +154,3 @@ const PublicLayout = () => {
 };
 
 export default PublicLayout;
-

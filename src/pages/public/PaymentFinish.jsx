@@ -19,7 +19,7 @@ const PaymentFinish = () => {
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">
           {isSuccess ? "Pembayaran Berhasil" : "Status Pembayaran"}
         </h1>
-        <p className="text-sm md:text-base text-slate-500 mb-4 leading-relaxed">
+        <p className="text-base text-slate-500 mb-4 leading-relaxed">
           {isSuccess
             ? "Terima kasih, pembayaran Anda telah diproses. Akses paket akan segera aktif."
             : "Kami menerima respon dari Midtrans. Jika status belum jelas, silakan cek riwayat transaksi Anda."}
