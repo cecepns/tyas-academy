@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../../components/common/ToastContext";
 import logo from "../../assets/logo.webp";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -72,11 +75,25 @@ const Login = () => {
             <label className="block text-xs font-medium text-slate-700 mb-1">
               Password
             </label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 rounded border border-slate-200 text-sm focus:outline-none focus:ring-1 focus:ring-primary-500"
-              {...register("password", { required: "Password wajib diisi" })}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full px-3 py-2 pr-10 rounded border border-slate-200 text-sm focus:outline-none focus:ring-1 focus:ring-primary-500"
+                {...register("password", { required: "Password wajib diisi" })}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 focus:outline-none"
+                aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
+            </div>
             {errors.password && (
               <p className="text-[11px] text-red-500 mt-1">
                 {errors.password.message}
