@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
+import Logo from "../assets/logo.webp";
 
 const DashboardLayout = ({ role }) => {
   const { user, logout } = useAuth();
@@ -76,8 +77,8 @@ const DashboardLayout = ({ role }) => {
       >
         <div className="flex items-center justify-between px-3 py-4 border-b border-slate-100 shrink-0">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-md">
-              TA
+            <div className="w-14 h-auto rounded-xl shadow-sm">
+              <img src={Logo} alt="CardioDemy" />
             </div>
             {(!collapsed || mobileOpen) && (
               <div className="min-w-0">
