@@ -68,7 +68,7 @@ const DashboardLayout = ({ role }) => {
             {!collapsed && (
               <div>
                 <p className="text-sm font-semibold text-slate-900">
-                  Tyas Academy
+                  CardioDemy
                 </p>
                 <p className="text-[11px] text-slate-500 capitalize">
                   {role} dashboard

@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { BookOpen, GraduationCap, LogOut, Menu, X } from "lucide-react";
+import { BookOpen, Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Logo from '../assets/logo.webp'
 import AOS from "aos";
@@ -24,10 +24,10 @@ const PublicLayout = () => {
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-14 h-auto">
-              <img src={Logo} alt="Tyas Academy" />
+              <img src={Logo} alt="CardioDemy" />
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Tyas Academy</p>
+              <p className="font-semibold text-slate-900">CardioDemy</p>
             </div>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm">
@@ -109,13 +109,33 @@ const PublicLayout = () => {
       </main>
       <footer className="border-t border-slate-100 bg-white mt-12">
         <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Tyas Academy. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CardioDemy. All rights reserved.</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            <a href="tel:08998843311" className="flex items-center gap-1.5 hover:text-primary-600 transition">
+              <Phone className="w-3.5 h-3.5 shrink-0" />
+              <span>08998843311</span>
+            </a>
+            <a href="mailto:ask.tyas@gmail.com" className="flex items-center gap-1.5 hover:text-primary-600 transition">
+              <Mail className="w-3.5 h-3.5 shrink-0" />
+              <span>ask.tyas@gmail.com</span>
+            </a>
+          </div>
           <p className="flex items-center gap-1">
             <span className="w-1 h-1 rounded-full bg-emerald-500" />
             Sistem Informasi Bimbel Online.
           </p>
         </div>
       </footer>
+      {/* Floating WhatsApp */}
+      <a
+        href="https://wa.me/628998843311"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:bg-[#20BD5A] hover:scale-105 active:scale-95 transition-all"
+        aria-label="Chat via WhatsApp"
+      >
+        <MessageCircle className="w-7 h-7" strokeWidth={2} />
+      </a>
     </div>
   );
 };

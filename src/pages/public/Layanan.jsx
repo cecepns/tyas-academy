@@ -25,7 +25,7 @@ const items = [
   {
     icon: Video,
     title: "Video Pembelajaran",
-    desc: "Video interaktif dan menyenangkan terhubung langsung ke YouTube Tyas Academy.",
+    desc: "Video interaktif dan menyenangkan terhubung langsung ke YouTube CardioDemy.",
   },
   {
     icon: BookOpen,
@@ -35,7 +35,7 @@ const items = [
   {
     icon: Users,
     title: "Komunitas & Testimoni",
-    desc: "Bergabung dengan komunitas dan lihat kisah sukses peserta yang lulus bersama Tyas Academy.",
+    desc: "Bergabung dengan komunitas dan lihat kisah sukses peserta yang lulus bersama CardioDemy.",
   },
   {
     icon: Headphones,
@@ -80,7 +80,7 @@ const Layanan = () => {
         data-aos="fade-up"
       >
         <p className="text-xs uppercase tracking-[0.3em] text-primary-500 mb-2">
-          Layanan Tyas Academy
+          Layanan CardioDemy
         </p>
         <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-3">
           Ekosistem Belajar Lengkap dalam Satu Sistem

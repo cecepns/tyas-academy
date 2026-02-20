@@ -107,7 +107,7 @@ const UsersPage = () => {
             Manajemen User
           </h1>
           <p className="text-xs text-slate-500">
-            Kelola akun admin dan user Tyas Academy.
+            Kelola akun admin dan user CardioDemy.
           </p>
         </div>
         <button

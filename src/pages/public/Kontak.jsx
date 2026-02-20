@@ -6,7 +6,7 @@ const Kontak = () => {
           Kontak
         </p>
         <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-3">
-          Hubungi Tim Tyas Academy
+          Hubungi Tim CardioDemy
         </h1>
         <p className="text-sm text-slate-600">
           Jika Anda tertarik mengimplementasikan sistem ini untuk lembaga

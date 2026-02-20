@@ -26,11 +26,11 @@ const Testimoni = () => {
           Testimoni
         </p>
         <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-3">
-          Apa Kata Peserta tentang Tyas Academy
+          Apa Kata Peserta tentang CardioDemy
         </h1>
         <p className="text-sm text-slate-600">
           Testimoni Peserta yang telah mengikuti bimbel, materi, dan tryout
-          melalui sistem Tyas Academy.
+          melalui sistem CardioDemy.
         </p>
       </div>
 

@@ -51,7 +51,7 @@ const DashboardOverview = () => {
           Ringkasan Sistem
         </h1>
         <p className="text-xs text-slate-500">
-          Pantau performa sistem bimbel online Tyas Academy secara sekilas.
+          Pantau performa sistem bimbel online CardioDemy secara sekilas.
         </p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

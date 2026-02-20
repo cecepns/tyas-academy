@@ -42,7 +42,7 @@ const Home = () => {
             </p>
             <h1 className="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
               Raih Mimpimu Jadi ASN & Kedinasan bersama{" "}
-              <span className="text-amber-300">Tyas Academy</span>
+              <span className="text-amber-300">CardioDemy</span>
             </h1>
             <p className="text-sm md:text-base text-primary-100/90 mb-6">
               Bimbingan belajar online terlengkap untuk persiapan CPNS, PPPK,
@@ -67,7 +67,7 @@ const Home = () => {
             <div className="rounded-xl p-4 backdrop-blur flex items-center justify-center">
               <img
                 src={heroImg}
-                alt="Tyas Widi Rahayu - Tyas Academy"
+                alt="Tyas Widi Rahayu - CardioDemy"
                 className="w-full h-full object-cover drop-shadow-xl"
               />
             </div>
@@ -86,7 +86,7 @@ const Home = () => {
               <iframe
                 className="absolute inset-0 w-full h-full"
                 src="https://www.youtube.com/embed/HqCQZQ5Zp8M?rel=0&modestbranding=1"
-                title="Tyas Academy - YouTube"
+                title="CardioDemy - YouTube"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
@@ -103,7 +103,7 @@ const Home = () => {
               <span className="text-primary-600">Berkualitas</span>
             </h2>
             <p className="text-xs md:text-sm text-slate-600 mb-4">
-              Tyas Academy hadir sebagai solusi terbaik bagi pejuang NIP dan
+              CardioDemy hadir sebagai solusi terbaik bagi pejuang NIP dan
               Sekolah Kedinasan. Kami berkomitmen memberikan pendampingan
               belajar yang intensif, update, dan terarah untuk membantumu meraih
               impian menjadi ASN.
@@ -200,7 +200,7 @@ const Home = () => {
             </p>
             <p className="text-xs text-slate-500">
               Video interaktif dan menyenangkan yang terhubung langsung ke
-              YouTube Tyas Academy.
+              YouTube CardioDemy.
             </p>
           </div>
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
@@ -224,7 +224,7 @@ const Home = () => {
             </p>
             <p className="text-xs text-slate-500">
               Bergabung dengan komunitas dan lihat kisah sukses peserta yang
-              lulus bersama Tyas Academy.
+              lulus bersama CardioDemy.
             </p>
           </div>
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
@@ -245,7 +245,7 @@ const Home = () => {
           <div className="mb-10" data-aos="fade-up" data-aos-delay="80">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg md:text-xl font-semibold text-slate-900">
-                Paket Layanan Tyas Academy
+                Paket Layanan CardioDemy
               </h2>
               <Link
                 to="/layanan"

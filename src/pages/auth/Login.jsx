@@ -38,19 +38,19 @@ const Login = () => {
           <div className="w-14 h-14 rounded-full overflow-hidden border border-slate-100 mb-2 bg-slate-50 flex items-center justify-center">
             <img
               src={logo}
-              alt="Tyas Academy"
+              alt="CardioDemy"
               className="w-full h-full object-contain"
             />
           </div>
           <p className="text-[11px] uppercase tracking-[0.25em] text-primary-500">
-            Tyas Academy
+            CardioDemy
           </p>
         </div>
         <h1 className="text-lg font-semibold text-slate-900 mb-1 text-center">
           {asAdmin ? "Login Admin" : "Login User"}
         </h1>
         <p className="text-xs text-slate-500 mb-5 text-center">
-          Masuk ke sistem informasi bimbel Tyas Academy.
+          Masuk ke sistem informasi bimbel CardioDemy.
         </p>
         <form className="space-y-4 text-sm" onSubmit={handleSubmit(onSubmit)}>
           <div>
