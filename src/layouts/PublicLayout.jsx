@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BookOpen, Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Logo from '../assets/logo.webp'
@@ -6,10 +6,15 @@ import AOS from "aos";
 
 const PublicLayout = () => {
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const navItems = [
     { to: "/", label: "Home" },

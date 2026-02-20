@@ -142,10 +142,10 @@ const BimbelPage = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Bimbel
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm md:text-base text-slate-500 mt-1">
             Atur judul, slug, deskripsi, cover, link meeting, dan catatan.
           </p>
         </div>
@@ -158,7 +158,7 @@ const BimbelPage = () => {
         </button>
       </div>
 
-      <div className="flex items-center justify-between gap-3 text-xs">
+      <div className="flex items-center justify-between gap-3 text-sm">
         <div className="relative w-full max-w-xs">
           <Search className="w-3 h-3 text-slate-400 absolute left-2 top-1/2 -translate-y-1/2" />
           <input
@@ -179,19 +179,19 @@ const BimbelPage = () => {
 
       <div className="bg-white border border-slate-100 rounded-lg shadow-sm">
         <div className="w-full overflow-x-auto">
-          <table className="w-full min-w-[640px] text-xs">
+          <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-slate-50 border-b border-slate-100">
             <tr>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Judul
               </th>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Slug
               </th>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Link Meeting
               </th>
-              <th className="px-3 py-2 text-right text-slate-500 font-medium">
+              <th className="px-4 py-3 text-right text-slate-600 font-semibold">
                 Aksi
               </th>
             </tr>
@@ -220,7 +220,7 @@ const BimbelPage = () => {
             {!loading &&
               items.map((item) => (
                 <tr key={item.id} className="border-t border-slate-50">
-                  <td className="px-3 py-2">{item.judul_bimbel}</td>
+                  <td className="px-4 py-3">{item.judul_bimbel}</td>
                   <td className="px-3 py-2 text-slate-500">{item.slug}</td>
                   <td className="px-3 py-2 text-slate-500">
                     {item.link_meeting}
@@ -246,7 +246,7 @@ const BimbelPage = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between text-sm text-slate-500">
         <p>
           Halaman {page} dari {totalPages}
         </p>

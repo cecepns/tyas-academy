@@ -6,7 +6,7 @@ const ConfirmModal = ({ open, title, description, onConfirm, onCancel }) => {
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
+          <h2 className="text-xl font-semibold text-slate-800">{title}</h2>
           <button
             onClick={onCancel}
             className="text-slate-400 hover:text-slate-600"
@@ -14,7 +14,7 @@ const ConfirmModal = ({ open, title, description, onConfirm, onCancel }) => {
             <X className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-sm text-slate-600 mb-6">{description}</p>
+        <p className="text-base text-slate-600 mb-6 leading-relaxed">{description}</p>
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}

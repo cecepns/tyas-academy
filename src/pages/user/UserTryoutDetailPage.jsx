@@ -102,7 +102,7 @@ const UserTryoutDetailPage = () => {
   if (loading || !tryout) {
     return (
       <div className="space-y-4">
-        <p className="text-xs text-slate-500">Memuat detail tryout...</p>
+        <p className="text-sm text-slate-500">Memuat detail tryout...</p>
       </div>
     );
   }
@@ -111,10 +111,10 @@ const UserTryoutDetailPage = () => {
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             {tryout.judul_tryout}
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm md:text-base text-slate-500 mt-1">
             Durasi pengerjaan: {tryout.durasi} menit.{" "}
             {typeof tryout.passingGrade === "number" && (
               <span className="ml-1">
@@ -129,10 +129,10 @@ const UserTryoutDetailPage = () => {
               <Clock3 className="w-3 h-3" />
             </div>
             <div className="flex flex-col items-start">
-              <span className="text-[11px] text-primary-600 uppercase tracking-[0.18em]">
+              <span className="text-xs text-primary-600 uppercase tracking-wider">
                 Sisa Waktu
               </span>
-              <span className="text-sm font-semibold text-primary-700">
+              <span className="text-base font-semibold text-primary-700">
                 {formatRemaining(Math.max(remaining, 0))}
               </span>
             </div>
@@ -141,7 +141,7 @@ const UserTryoutDetailPage = () => {
       </div>
 
       {tryout.deskripsi && (
-        <p className="text-xs text-slate-600 max-w-2xl">{tryout.deskripsi}</p>
+        <p className="text-sm md:text-base text-slate-600 max-w-2xl leading-relaxed">{tryout.deskripsi}</p>
       )}
 
       {soal.length > 0 ? (
@@ -152,13 +152,13 @@ const UserTryoutDetailPage = () => {
             return (
               <div
                 key={s.bank_soal_id}
-                className="bg-white border border-slate-100 rounded-lg shadow-sm p-3 text-xs"
+                className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm"
               >
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-semibold text-slate-900">
                     Soal {currentIndex + 1}
                   </p>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-xs md:text-sm text-slate-500">
                     {currentIndex + 1} dari {soal.length}
                   </p>
                 </div>
@@ -203,7 +203,7 @@ const UserTryoutDetailPage = () => {
               onClick={() =>
                 setCurrentIndex((idx) => Math.max(0, idx - 1))
               }
-              className="px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-700 disabled:opacity-40"
+              className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
             >
               Sebelumnya
             </button>
@@ -216,7 +216,7 @@ const UserTryoutDetailPage = () => {
                     Math.min(soal.length - 1, idx + 1)
                   )
                 }
-                className="px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-700 disabled:opacity-40"
+                className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
               >
                 Berikutnya
               </button>
@@ -225,7 +225,7 @@ const UserTryoutDetailPage = () => {
                   type="button"
                   onClick={() => handleSubmit(false)}
                   disabled={submitting}
-                  className="px-4 py-1.5 rounded bg-primary-600 text-white text-xs font-medium hover:bg-primary-700 disabled:opacity-60"
+                  className="px-5 py-2 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 disabled:opacity-60"
                 >
                   {submitting ? "Mengirim..." : "Kirim Jawaban"}
                 </button>
@@ -234,14 +234,14 @@ const UserTryoutDetailPage = () => {
           </div>
         </div>
       ) : (
-        <p className="text-xs text-slate-500">
+        <p className="text-sm text-slate-500">
           Belum ada soal yang terhubung ke tryout ini.
         </p>
       )}
 
       {result && (
         <div className="mt-4 space-y-3">
-          <div className="bg-white border border-slate-100 rounded-lg shadow-sm p-3 text-xs">
+          <div className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm">
             <p className="font-semibold text-slate-900 mb-1">Hasil Tryout</p>
             <p className="text-slate-600">
               Skor: {result.totalScore} / {result.maxScore}
@@ -262,7 +262,7 @@ const UserTryoutDetailPage = () => {
           </div>
 
           {Array.isArray(result.details) && result.details.length > 0 && (
-            <div className="bg-white border border-slate-100 rounded-lg shadow-sm p-3 text-xs space-y-3">
+            <div className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm space-y-3">
               <p className="font-semibold text-slate-900">
                 Pembahasan Soal
               </p>

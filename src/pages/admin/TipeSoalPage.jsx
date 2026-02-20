@@ -101,10 +101,10 @@ const TipeSoalPage = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Tipe Soal
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm md:text-base text-slate-500 mt-1">
             Atur kode soal, nama tipe, dan passing grade.
           </p>
         </div>
@@ -117,7 +117,7 @@ const TipeSoalPage = () => {
         </button>
       </div>
 
-      <div className="flex items-center justify-between gap-3 text-xs">
+      <div className="flex items-center justify-between gap-3 text-sm">
         <div className="relative w-full max-w-xs">
           <Search className="w-3 h-3 text-slate-400 absolute left-2 top-1/2 -translate-y-1/2" />
           <input
@@ -138,19 +138,19 @@ const TipeSoalPage = () => {
 
       <div className="bg-white border border-slate-100 rounded-lg shadow-sm">
         <div className="w-full overflow-x-auto">
-          <table className="w-full min-w-[640px] text-xs">
+          <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-slate-50 border-b border-slate-100">
             <tr>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Kode Soal
               </th>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Nama Tipe Soal
               </th>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Passing Grade
               </th>
-              <th className="px-3 py-2 text-right text-slate-500 font-medium">
+              <th className="px-4 py-3 text-right text-slate-600 font-semibold">
                 Aksi
               </th>
             </tr>
@@ -179,10 +179,10 @@ const TipeSoalPage = () => {
             {!loading &&
               items.map((item) => (
                 <tr key={item.id} className="border-t border-slate-50">
-                  <td className="px-3 py-2">{item.kode_soal}</td>
-                  <td className="px-3 py-2">{item.nama_tipe_soal}</td>
-                  <td className="px-3 py-2">{item.passing_grade}</td>
-                  <td className="px-3 py-2 text-right">
+                  <td className="px-4 py-3">{item.kode_soal}</td>
+                  <td className="px-4 py-3">{item.nama_tipe_soal}</td>
+                  <td className="px-4 py-3">{item.passing_grade}</td>
+                  <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => onEdit(item)}
                       className="inline-flex items-center justify-center w-7 h-7 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 mr-1"
@@ -203,7 +203,7 @@ const TipeSoalPage = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between text-sm text-slate-500">
         <p>
           Halaman {page} dari {totalPages}
         </p>
@@ -227,7 +227,7 @@ const TipeSoalPage = () => {
 
       {openForm && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
-          <div className="bg-white w-full max-w-2xl rounded-xl shadow-xl border border-slate-100 p-5 text-xs">
+          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl border border-slate-100 p-6 text-sm">
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-semibold text-slate-900">
                 {editing ? "Edit Tipe Soal" : "Tambah Tipe Soal"}

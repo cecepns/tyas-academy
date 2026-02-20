@@ -37,33 +37,33 @@ const UserResourcesPage = ({ type }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">
+        <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           {titleMap[type]}
         </h1>
-        <p className="text-xs text-slate-500">
+        <p className="text-sm md:text-base text-slate-500 mt-1">
           Daftar {titleMap[type].toLowerCase()} yang bisa kamu akses dari paket
           yang sudah dibeli.
         </p>
       </div>
 
-      {loading && <p className="text-xs text-slate-500">Memuat data...</p>}
+      {loading && <p className="text-sm text-slate-500">Memuat data...</p>}
       {!loading && section.length === 0 && (
-        <p className="text-xs text-slate-500">
+        <p className="text-sm text-slate-500">
           Belum ada {titleMap[type].toLowerCase()} yang bisa diakses.
         </p>
       )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
         {type === "bimbel" &&
           section.map((b) => (
             <div
               key={b.id}
-              className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden"
+              className="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
             >
               {b.cover_image && (
-                <div className="h-28 w-full overflow-hidden border-b border-slate-100">
+                <div className="h-32 w-full overflow-hidden border-b border-slate-100">
                   <img
                     src={`${fileBase}${b.cover_image}`}
                     alt={b.judul_bimbel}
@@ -71,23 +71,23 @@ const UserResourcesPage = ({ type }) => {
                   />
                 </div>
               )}
-              <div className="p-3">
-                <p className="text-sm font-semibold text-slate-900">
+              <div className="p-4">
+                <p className="text-base font-semibold text-slate-900">
                   {b.judul_bimbel}
                 </p>
-                <p className="text-[11px] text-slate-500 mt-1">
+                <p className="text-xs md:text-sm text-slate-500 mt-2">
                   Link meeting:{" "}
                   <a
                     href={b.link_meeting}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-primary-600 underline"
+                    className="text-primary-600 underline font-medium"
                   >
                     {b.link_meeting}
                   </a>
                 </p>
                 {b.catatan_meeting && (
-                  <p className="text-[11px] text-slate-500 mt-1 whitespace-pre-line">
+                  <p className="text-xs md:text-sm text-slate-500 mt-1 whitespace-pre-line">
                     {b.catatan_meeting}
                   </p>
                 )}
@@ -101,10 +101,10 @@ const UserResourcesPage = ({ type }) => {
               key={m.id}
               to={`/user/materi/${m.id}`}
               state={{ materi: m }}
-              className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden hover:border-primary-200 hover:shadow-md transition"
+              className="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden hover:border-primary-200 hover:shadow-lg transition"
             >
               {m.banner_image && (
-                <div className="h-28 w-full overflow-hidden border-b border-slate-100">
+                <div className="h-32 w-full overflow-hidden border-b border-slate-100">
                   <img
                     src={`${fileBase}${m.banner_image}`}
                     alt={m.judul_materi}
@@ -112,14 +112,14 @@ const UserResourcesPage = ({ type }) => {
                   />
                 </div>
               )}
-              <div className="p-3">
-                <p className="text-sm font-semibold text-slate-900">
+              <div className="p-4">
+                <p className="text-base font-semibold text-slate-900">
                   {m.judul_materi}
                 </p>
-                <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                <p className="text-xs md:text-sm text-slate-500 mt-1 line-clamp-2">
                   {m.deskripsi}
                 </p>
-                <p className="text-[11px] text-primary-600 mt-2">
+                <p className="text-sm text-primary-600 mt-2 font-medium">
                   Lihat detail materi →
                 </p>
               </div>
@@ -132,10 +132,10 @@ const UserResourcesPage = ({ type }) => {
               key={t.id}
               to={`/user/tryout/${t.id}`}
               state={{ tryout: t }}
-              className="bg-white border border-slate-100 rounded-lg shadow-sm overflow-hidden hover:border-primary-200 hover:shadow-md transition"
+              className="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden hover:border-primary-200 hover:shadow-lg transition"
             >
               {t.banner_image && (
-                <div className="h-28 w-full overflow-hidden border-b border-slate-100">
+                <div className="h-32 w-full overflow-hidden border-b border-slate-100">
                   <img
                     src={`${fileBase}${t.banner_image}`}
                     alt={t.judul_tryout}
@@ -143,14 +143,14 @@ const UserResourcesPage = ({ type }) => {
                   />
                 </div>
               )}
-              <div className="p-3">
-                <p className="text-sm font-semibold text-slate-900">
+              <div className="p-4">
+                <p className="text-base font-semibold text-slate-900">
                   {t.judul_tryout}
                 </p>
-                <p className="text-[11px] text-slate-500 mt-1">
+                <p className="text-xs md:text-sm text-slate-500 mt-1">
                   Durasi: {t.durasi} menit
                 </p>
-                <p className="text-[11px] text-primary-600 mt-2">
+                <p className="text-sm text-primary-600 mt-2 font-medium">
                   Buka detail tryout →
                 </p>
               </div>

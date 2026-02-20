@@ -47,31 +47,31 @@ const DashboardOverview = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">
+        <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           Ringkasan Sistem
         </h1>
-        <p className="text-xs text-slate-500">
+        <p className="text-sm md:text-base text-slate-500 mt-1">
           Pantau performa sistem bimbel online CardioDemy secara sekilas.
         </p>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.key}
-              className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex items-center gap-3"
+              className="bg-white rounded-2xl border border-slate-100 shadow-md hover:shadow-lg transition-shadow p-5 flex items-center gap-4"
             >
               <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm ${card.color}`}
+                className={`w-12 h-12 rounded-xl flex items-center justify-center ${card.color} shadow-sm`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-6 h-6" />
               </div>
-              <div>
-                <p className="text-[11px] uppercase tracking-wide text-slate-400">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm uppercase tracking-wide text-slate-500 font-medium">
                   {card.label}
                 </p>
-                <p className="text-lg font-semibold text-slate-900">
+                <p className="text-xl md:text-2xl font-bold text-slate-900 mt-0.5">
                   {stats ? stats[card.key] : "-"}
                 </p>
               </div>

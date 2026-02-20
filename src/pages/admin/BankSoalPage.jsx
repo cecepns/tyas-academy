@@ -216,10 +216,10 @@ const BankSoalPage = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
             Manajemen Bank Soal
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm md:text-base text-slate-500 mt-1">
             Kelola soal, pembahasan, dan opsi jawaban.
           </p>
         </div>
@@ -232,7 +232,7 @@ const BankSoalPage = () => {
         </button>
       </div>
 
-      <div className="flex items-center justify-between gap-3 text-xs">
+      <div className="flex items-center justify-between gap-3 text-sm">
         <div className="relative w-full max-w-xs">
           <Search className="w-3 h-3 text-slate-400 absolute left-2 top-1/2 -translate-y-1/2" />
           <input
@@ -253,19 +253,19 @@ const BankSoalPage = () => {
 
       <div className="bg-white border border-slate-100 rounded-lg shadow-sm">
         <div className="w-full overflow-x-auto">
-          <table className="w-full min-w-[640px] text-xs">
+          <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-slate-50 border-b border-slate-100">
             <tr>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Tipe Soal
               </th>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Soal
               </th>
-              <th className="px-3 py-2 text-left text-slate-500 font-medium">
+              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
                 Dibuat
               </th>
-              <th className="px-3 py-2 text-right text-slate-500 font-medium">
+              <th className="px-4 py-3 text-right text-slate-600 font-semibold">
                 Aksi
               </th>
             </tr>
@@ -294,8 +294,8 @@ const BankSoalPage = () => {
             {!loading &&
               items.map((item) => (
                 <tr key={item.id} className="border-t border-slate-50">
-                  <td className="px-3 py-2">{item.nama_tipe_soal}</td>
-                  <td className="px-3 py-2">
+                  <td className="px-4 py-3">{item.nama_tipe_soal}</td>
+                  <td className="px-4 py-3">
                     <div
                       className="line-clamp-2 prose prose-xs max-w-none"
                       dangerouslySetInnerHTML={{ __html: item.soal }}
@@ -325,7 +325,7 @@ const BankSoalPage = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between text-sm text-slate-500">
         <p>
           Halaman {page} dari {totalPages}
         </p>

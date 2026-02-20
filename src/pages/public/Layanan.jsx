@@ -79,13 +79,13 @@ const Layanan = () => {
         className="max-w-2xl mb-10"
         data-aos="fade-up"
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-primary-500 mb-2">
+        <p className="text-sm md:text-base uppercase tracking-[0.2em] text-primary-500 mb-2">
           Layanan CardioDemy
         </p>
-        <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-3">
+        <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-3">
           Ekosistem Belajar Lengkap dalam Satu Sistem
         </h1>
-        <p className="text-sm text-slate-600">
+        <p className="text-base md:text-lg text-slate-600 leading-relaxed">
           Sistem informasi bimbel online yang mengintegrasikan manajemen user,
           paket, bimbel, materi, bank soal, tryout, transaksi, testimoni, dan
           kode promo dengan tampilan modern dan responsif.
@@ -110,11 +110,11 @@ const Layanan = () => {
                 </div>
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-800">
+                <p className="text-base font-semibold text-slate-800">
                   {item.title}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">{item.desc}</p>
-                <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-slate-500">
+                <p className="text-sm md:text-base text-slate-500 mt-1 leading-relaxed">{item.desc}</p>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs md:text-sm text-slate-500">
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-50 border border-slate-100">
                     <CheckCircle2 className="w-3 h-3 text-emerald-500" />
                     CRUD admin & user
@@ -132,15 +132,15 @@ const Layanan = () => {
         data-aos-delay="120"
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg md:text-xl font-semibold text-slate-900">
+          <h2 className="text-xl md:text-2xl font-semibold text-slate-900">
             Paket Layanan
           </h2>
         </div>
         {loadingPaket && (
-          <p className="text-xs text-slate-500">Memuat paket...</p>
+          <p className="text-sm text-slate-500">Memuat paket...</p>
         )}
         {!loadingPaket && paket.length === 0 && (
-          <p className="text-xs text-slate-500">
+          <p className="text-sm md:text-base text-slate-500">
             Belum ada paket yang tersedia.
           </p>
         )}
@@ -162,21 +162,21 @@ const Layanan = () => {
                     </div>
                   )}
                   <div className="p-4 flex-1 flex flex-col">
-                    <p className="text-sm font-semibold text-slate-900 mb-1">
+                    <p className="text-base font-semibold text-slate-900 mb-1">
                       {p.nama_paket}
                     </p>
-                    <p className="text-xs text-slate-500 mb-2">
+                    <p className="text-sm text-slate-500 mb-2">
                       {p.durasi_aktif === 0
                         ? "Akses selamanya"
                         : `Akses ${p.durasi_aktif} hari`}
                     </p>
                     {p.fitur_paket && (
-                      <p className="text-[11px] text-slate-600 whitespace-pre-line line-clamp-3">
+                      <p className="text-sm text-slate-600 whitespace-pre-line line-clamp-3 leading-relaxed">
                         {p.fitur_paket}
                       </p>
                     )}
                     <div className="mt-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-primary-600">
+                      <p className="text-base font-semibold text-primary-600">
                         Rp {p.harga?.toLocaleString?.("id-ID") ?? p.harga}
                       </p>
                     </div>
@@ -184,7 +184,7 @@ const Layanan = () => {
                 </div>
               ))}
             </div>
-            <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
+            <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
               <p>
                 Halaman {page} dari {totalPages}
               </p>

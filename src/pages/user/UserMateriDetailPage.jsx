@@ -35,7 +35,7 @@ const UserMateriDetailPage = () => {
   if (loading || !materi) {
     return (
       <div className="space-y-4">
-        <p className="text-xs text-slate-500">Memuat materi...</p>
+        <p className="text-sm text-slate-500">Memuat materi...</p>
       </div>
     );
   }
@@ -43,10 +43,10 @@ const UserMateriDetailPage = () => {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-lg font-semibold text-slate-900">
+        <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
           {materi.judul_materi}
         </h1>
-        <p className="text-xs text-slate-500">
+        <p className="text-sm md:text-base text-slate-500 mt-1">
           Materi ini berasal dari paket yang sudah kamu beli.
         </p>
       </div>
@@ -62,15 +62,15 @@ const UserMateriDetailPage = () => {
       )}
 
       {materi.deskripsi && (
-        <p className="text-xs text-slate-600 max-w-2xl">{materi.deskripsi}</p>
+        <p className="text-sm md:text-base text-slate-600 max-w-2xl leading-relaxed">{materi.deskripsi}</p>
       )}
 
       {konten.length > 0 && (
         <div className="space-y-3">
-          <p className="text-xs font-semibold text-slate-800">
+          <p className="text-sm font-semibold text-slate-800">
             Konten Materi
           </p>
-          <div className="space-y-2 text-xs">
+          <div className="space-y-2 text-sm">
             {konten.map((k) => (
               <div
                 key={k.id}
@@ -84,7 +84,7 @@ const UserMateriDetailPage = () => {
                   )}
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-[11px] font-semibold text-slate-800">
+                  <p className="text-xs font-semibold text-slate-800">
                     {k.tipe_materi === "video_link" ? "Video" : "File PDF"}
                   </p>
                   {k.tipe_materi === "video_link" && k.video_link && (
