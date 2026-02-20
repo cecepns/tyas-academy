@@ -3,19 +3,17 @@ import { CheckCircle2, ChevronLeft, ChevronRight, Clock, ListChecks, Shield, Use
 import heroImg from "../../assets/hero.png";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import api from "../../utils/apiClient";
 import getFileBase from "../../utils/fileBase";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const Home = () => {
   const [overview, setOverview] = useState(null);
   const [testimoni, setTestimoni] = useState([]);
   const [paket, setPaket] = useState([]);
-  const testimoniPrevRef = useRef(null);
-  const testimoniNextRef = useRef(null);
+  const testimoniSwiperRef = useRef(null);
 
   const fileBase = useMemo(() => getFileBase(), []);
 
@@ -324,36 +322,29 @@ const Home = () => {
             </div>
             <div className="relative pt-16 md:pt-0 px-4 md:px-6">
               <button
-                ref={testimoniPrevRef}
                 type="button"
-                className="absolute top-2 left-1/2 -translate-x-14 md:left-0 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm"
+                onClick={() => testimoniSwiperRef.current?.swiper?.slidePrev()}
+                className="absolute top-2 left-1/2 -translate-x-14 md:left-0 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm touch-manipulation active:scale-95"
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
               </button>
               <button
-                ref={testimoniNextRef}
                 type="button"
-                className="absolute top-2 left-1/2 translate-x-2 md:left-auto md:right-0 md:top-1/2 md:translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm"
+                onClick={() => testimoniSwiperRef.current?.swiper?.slideNext()}
+                className="absolute top-2 left-1/2 translate-x-2 md:left-auto md:right-0 md:top-1/2 md:translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm touch-manipulation active:scale-95"
                 aria-label="Next testimonial"
               >
                 <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
               </button>
               <Swiper
-                modules={[Navigation, Pagination, Autoplay]}
+                ref={testimoniSwiperRef}
+                modules={[Pagination, Autoplay]}
                 spaceBetween={16}
                 slidesPerView={1}
                 breakpoints={{
                   640: { slidesPerView: 2 },
                   1024: { slidesPerView: 3 },
-                }}
-                navigation={{
-                  prevEl: testimoniPrevRef.current,
-                  nextEl: testimoniNextRef.current,
-                }}
-                onBeforeInit={(swiper) => {
-                  swiper.params.navigation.prevEl = testimoniPrevRef.current;
-                  swiper.params.navigation.nextEl = testimoniNextRef.current;
                 }}
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 5000, disableOnInteraction: false }}

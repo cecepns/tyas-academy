@@ -1,18 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import api from "../../utils/apiClient";
 import getFileBase from "../../utils/fileBase";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const Testimoni = () => {
   const [items, setItems] = useState([]);
   const fileBase = useMemo(() => getFileBase(), []);
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const load = async () => {
@@ -52,36 +50,29 @@ const Testimoni = () => {
           data-aos-delay="80"
         >
           <button
-            ref={prevRef}
             type="button"
-            className="absolute top-2 left-1/2 -translate-x-14 md:left-0 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm"
+            onClick={() => swiperRef.current?.swiper?.slidePrev()}
+            className="absolute top-2 left-1/2 -translate-x-14 md:left-0 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm touch-manipulation active:scale-95"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
           </button>
           <button
-            ref={nextRef}
             type="button"
-            className="absolute top-2 left-1/2 translate-x-2 md:left-auto md:right-0 md:top-1/2 md:translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm"
+            onClick={() => swiperRef.current?.swiper?.slideNext()}
+            className="absolute top-2 left-1/2 translate-x-2 md:left-auto md:right-0 md:top-1/2 md:translate-x-0 md:-translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-slate-200 text-primary-600 flex items-center justify-center hover:bg-primary-50 hover:border-primary-200 transition shadow-sm touch-manipulation active:scale-95"
             aria-label="Next testimonial"
           >
             <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
           </button>
           <Swiper
-            modules={[Navigation, Pagination, Autoplay]}
+            ref={swiperRef}
+            modules={[Pagination, Autoplay]}
             spaceBetween={16}
             slidesPerView={1}
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
-            }}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            onBeforeInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef.current;
-              swiper.params.navigation.nextEl = nextRef.current;
             }}
             pagination={{ clickable: true }}
             autoplay={{ delay: 5000, disableOnInteraction: false }}
