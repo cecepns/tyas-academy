@@ -1,0 +1,355 @@
+import { Link } from "react-router-dom";
+import { CheckCircle2, Clock, ListChecks, Shield, Users } from "lucide-react";
+import heroImg from "../../assets/hero.png";
+import { useEffect, useMemo, useState } from "react";
+import api from "../../utils/apiClient";
+import getFileBase from "../../utils/fileBase";
+
+const Home = () => {
+  const [overview, setOverview] = useState(null);
+  const [testimoni, setTestimoni] = useState([]);
+  const [paket, setPaket] = useState([]);
+
+  const fileBase = useMemo(() => getFileBase(), []);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [oRes, tRes, pRes] = await Promise.all([
+          api.get("/public/overview"),
+          api.get("/public/testimoni"),
+          api.get("/public/paket", {
+            params: { page: 1, limit: 6 },
+          }),
+        ]);
+        setOverview(oRes.data);
+        setTestimoni(tRes.data);
+        setPaket(pRes.data?.data || []);
+      } catch (e) {
+        // ignore
+      }
+    };
+    load();
+  }, []);
+
+  return (
+    <div>
+      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-slate-900 text-white">
+        <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+          <div data-aos="fade-right">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary-100 mb-3">
+              Bimbel Online & Tryout
+            </p>
+            <h1 className="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
+              Raih Mimpimu Jadi ASN & Kedinasan bersama{" "}
+              <span className="text-amber-300">Tyas Academy</span>
+            </h1>
+            <p className="text-sm md:text-base text-primary-100/90 mb-6">
+              Bimbingan belajar online terlengkap untuk persiapan CPNS, PPPK,
+              Sekolah Kedinasan, dan UKOM. Belajar kapan saja, di mana saja!.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/register"
+                className="px-5 py-2.5 rounded-full bg-amber-300 text-slate-900 text-sm font-medium hover:bg-amber-200"
+              >
+                Daftar Sekarang
+              </Link>
+              <Link
+                to="/layanan"
+                className="px-5 py-2.5 rounded-full border border-primary-200 text-sm hover:bg-primary-600/40"
+              >
+                Lihat Layanan
+              </Link>
+            </div>
+          </div>
+          <div data-aos="fade-left">
+            <div className="rounded-xl p-4 backdrop-blur flex items-center justify-center">
+              <img
+                src={heroImg}
+                alt="Tyas Widi Rahayu - Tyas Academy"
+                className="w-full h-full object-cover drop-shadow-xl"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section video & highlight platform */}
+      <section className="max-w-6xl mx-auto px-4 py-10 md:py-14">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div
+            className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden"
+            data-aos="fade-right"
+          >
+            <div className="relative w-full pt-[56.25%]">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/HqCQZQ5Zp8M?rel=0&modestbranding=1"
+                title="Tyas Academy - YouTube"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          </div>
+          <div data-aos="fade-left">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-50 text-[11px] text-primary-700 font-medium mb-3">
+              ✨ Tentang Kami
+            </span>
+            <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-3">
+              Platform Bimbel Online{" "}
+              <span className="text-primary-600">Terpercaya</span> &{" "}
+              <span className="text-primary-600">Berkualitas</span>
+            </h2>
+            <p className="text-xs md:text-sm text-slate-600 mb-4">
+              Tyas Academy hadir sebagai solusi terbaik bagi pejuang NIP dan
+              Sekolah Kedinasan. Kami berkomitmen memberikan pendampingan
+              belajar yang intensif, update, dan terarah untuk membantumu meraih
+              impian menjadi ASN.
+            </p>
+            <ul className="space-y-2 text-xs md:text-sm text-slate-600 mb-5">
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                </span>
+                <div>
+                  <p className="font-medium text-slate-800">Materi Terupdate</p>
+                  <p className="text-[11px] md:text-xs text-slate-500">
+                    Kisi-kisi sesuai regulasi terbaru untuk CPNS, PPPK, dan
+                    Kedinasan.
+                  </p>
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                </span>
+                <div>
+                  <p className="font-medium text-slate-800">
+                    Pengajar Berpengalaman
+                  </p>
+                  <p className="text-[11px] md:text-xs text-slate-500">
+                    Dibimbing langsung oleh Kak Tyas dan tim pengajar
+                    profesional.
+                  </p>
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-0.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                </span>
+                <div>
+                  <p className="font-medium text-slate-800">
+                    Metode Belajar yang Fun
+                  </p>
+                  <p className="text-[11px] md:text-xs text-slate-500">
+                    Pembelajaran interaktif, tidak membosankan, dan mudah
+                    dipahami.
+                  </p>
+                </div>
+              </li>
+            </ul>
+            <Link
+              to="/layanan"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-xs md:text-sm font-medium hover:bg-primary-700"
+            >
+              Pelajari Lebih Lanjut
+              <span className="text-base leading-none">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+        <div
+          className="grid md:grid-cols-3 gap-6 mb-10"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center mb-3">
+              <Shield className="w-5 h-5 text-violet-600" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 mb-1">
+              Bimbel Online
+            </p>
+            <p className="text-xs text-slate-500">
+              Ikuti bimbel online langsung bersama Kak Tyas untuk pendampingan
+              intensif.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center mb-3">
+              <ListChecks className="w-5 h-5 text-emerald-600" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 mb-1">
+              Paket Try Out
+            </p>
+            <p className="text-xs text-slate-500">
+              Try out sesuai kisi-kisi terbaru untuk persiapan ujian CPNS,
+              Sekolah Kedinasan, PPPK, dan UKOM.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center mb-3">
+              <Clock className="w-5 h-5 text-amber-500" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 mb-1">
+              Video Pembelajaran
+            </p>
+            <p className="text-xs text-slate-500">
+              Video interaktif dan menyenangkan yang terhubung langsung ke
+              YouTube Tyas Academy.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <div className="w-9 h-9 rounded-xl bg-sky-50 flex items-center justify-center mb-3">
+              <Users className="w-5 h-5 text-sky-600" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 mb-1">
+              Materi PDF &amp; Video
+            </p>
+            <p className="text-xs text-slate-500">
+              Materi teks dan video sebagai bahan belajar kapan pun dan di mana
+              pun.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center mb-3">
+              <Users className="w-5 h-5 text-rose-500" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 mb-1">
+              Komunitas &amp; Testimoni
+            </p>
+            <p className="text-xs text-slate-500">
+              Bergabung dengan komunitas dan lihat kisah sukses peserta yang
+              lulus bersama Tyas Academy.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <div className="w-9 h-9 rounded-xl bg-primary-50 flex items-center justify-center mb-3">
+              <Clock className="w-5 h-5 text-primary-600" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 mb-1">
+              Pendampingan Berkelanjutan
+            </p>
+            <p className="text-xs text-slate-500">
+              Update materi dan bimbingan rutin agar progres belajar tetap
+              terarah.
+            </p>
+          </div>
+        </div>
+
+        {paket.length > 0 && (
+          <div className="mb-10" data-aos="fade-up" data-aos-delay="80">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg md:text-xl font-semibold text-slate-900">
+                Paket Layanan Tyas Academy
+              </h2>
+              <Link
+                to="/layanan"
+                className="text-xs text-primary-600 hover:text-primary-700"
+              >
+                Lihat semua paket
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {paket.slice(0, 6).map((p) => (
+                <div
+                  key={p.id}
+                  className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col"
+                >
+                  {p.cover_image && (
+                    <div className="h-32 w-full overflow-hidden">
+                      <img
+                        src={`${fileBase}${p.cover_image}`}
+                        alt={p.nama_paket}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4 flex-1 flex flex-col">
+                    <p className="text-sm font-semibold text-slate-900 mb-1">
+                      {p.nama_paket}
+                    </p>
+                    <p className="text-xs text-slate-500 mb-2">
+                      {p.durasi_aktif === 0
+                        ? "Akses selamanya"
+                        : `Akses ${p.durasi_aktif} hari`}
+                    </p>
+                    {p.fitur_paket && (
+                      <p className="text-[11px] text-slate-600 whitespace-pre-line line-clamp-3">
+                        {p.fitur_paket}
+                      </p>
+                    )}
+                    <div className="mt-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-primary-600">
+                        Rp {p.harga?.toLocaleString?.("id-ID") ?? p.harga}
+                      </p>
+                      <Link
+                        to="/login"
+                        className="text-[11px] px-3 py-1 rounded-full border border-primary-500 text-primary-600 hover:bg-primary-50"
+                      >
+                        Beli Paket
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {testimoni.length > 0 && (
+          <div className="mt-12" data-aos="fade-up" data-aos-delay="150">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-slate-800">
+                Cerita Sukses Peserta
+              </h2>
+              <Link
+                to="/testimoni"
+                className="text-xs text-primary-600 hover:text-primary-700"
+              >
+                Lihat semua
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {testimoni.slice(0, 3).map((t) => (
+                <div
+                  key={t.id}
+                  className="bg-white rounded-xl border border-slate-100 p-4"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    {t.foto ? (
+                      <div className="w-9 h-9 rounded-full overflow-hidden border border-slate-100 bg-slate-50">
+                        <img
+                          src={`${fileBase}${t.foto}`}
+                          alt={t.nama}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center text-xs font-semibold text-primary-700">
+                        {t.nama?.[0]}
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-sm font-medium text-slate-800">
+                        {t.nama}
+                      </p>
+                      <p className="text-[11px] text-amber-500">Peserta</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-600">{t.testimoni}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+};
+
+export default Home;
