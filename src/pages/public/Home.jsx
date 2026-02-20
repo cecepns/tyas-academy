@@ -34,30 +34,31 @@ const Home = () => {
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-slate-900 text-white">
+      <section className="bg-transparent">
         <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
           <div data-aos="fade-right">
-            <p className="text-base uppercase tracking-[0.2em] text-primary-100 mb-3">
+            <p className="text-base uppercase tracking-[0.2em] text-primary-600 mb-3 font-medium">
               Bimbel Online & Tryout
             </p>
-            <h1 className="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
-              Raih Mimpimu Jadi ASN & Kedinasan bersama{" "}
-              <span className="text-amber-300">CardioDemy</span>
+            <h1 className="text-3xl md:text-5xl font-semibold mb-4 leading-tight text-slate-800">
+              Raih Mimpimu Jadi{" "}
+              <span className="text-primary-600">ASN & Kedinasan</span> bersama{" "}
+              <span className="text-amber-500">CardioDemy</span>
             </h1>
-            <p className="text-base md:text-lg text-primary-100/90 mb-6 leading-relaxed">
+            <p className="text-base md:text-lg text-slate-600 mb-6 leading-relaxed">
               Bimbingan belajar online terlengkap untuk persiapan CPNS, PPPK,
               Sekolah Kedinasan, dan UKOM. Belajar kapan saja, di mana saja!.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/register"
-                className="px-5 py-2.5 rounded-full bg-amber-300 text-slate-900 text-sm font-medium hover:bg-amber-200"
+                className="px-5 py-2.5 rounded-full bg-primary-600 text-white text-sm font-medium hover:bg-primary-700"
               >
                 Daftar Sekarang
               </Link>
               <Link
                 to="/layanan"
-                className="px-5 py-2.5 rounded-full border border-primary-200 text-sm hover:bg-primary-600/40"
+                className="px-5 py-2.5 rounded-full border-2 border-primary-500 text-primary-600 text-sm font-medium hover:bg-primary-50"
               >
                 Lihat Layanan
               </Link>

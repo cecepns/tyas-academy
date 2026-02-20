@@ -114,12 +114,6 @@ const Layanan = () => {
                   {item.title}
                 </p>
                 <p className="text-base text-slate-500 mt-1 leading-relaxed">{item.desc}</p>
-                <div className="mt-3 flex flex-wrap gap-2 text-xs md:text-sm text-slate-500">
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-50 border border-slate-100">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                    CRUD admin & user
-                  </span>
-                </div>
               </div>
             </div>
           );
