@@ -131,7 +131,7 @@ const UserPaketPage = () => {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
                         <p className="text-base md:text-lg font-semibold text-slate-900">
                           {p.nama_paket}
