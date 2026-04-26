@@ -604,6 +604,40 @@ app.delete(
 
 // ---------- TRYOUT ----------
 
+const buildTryoutAnswerSummary = (details = []) => {
+  const totalQuestions = Array.isArray(details) ? details.length : 0;
+  const correctCount = (details || []).reduce((acc, item) => {
+    if (!item) return acc;
+    if (item.jawaban_user && item.jawaban_user === item.jawaban_benar) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+  const answeredCount = (details || []).reduce((acc, item) => {
+    if (!item) return acc;
+    return item.jawaban_user ? acc + 1 : acc;
+  }, 0);
+  const incorrectCount = answeredCount - correctCount;
+  const unansweredCount = Math.max(totalQuestions - answeredCount, 0);
+  return {
+    totalQuestions,
+    answeredCount,
+    correctCount,
+    incorrectCount,
+    unansweredCount,
+  };
+};
+
+const parseTryoutDetails = (rawDetails) => {
+  if (!rawDetails) return [];
+  try {
+    const parsed = JSON.parse(rawDetails);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    return [];
+  }
+};
+
 app.get("/api/admin/tryout", authMiddleware(["admin"]), async (req, res) => {
   await listWithSearch(req, res, "tryout", ["judul_tryout", "slug"]);
 });
@@ -1947,12 +1981,25 @@ app.get(
       );
 
       const [attempts] = await pool.query(
-        `SELECT id, total_score, max_score, percentage, lulus, created_at
+        `SELECT id, total_score, max_score, percentage, lulus, details, created_at
          FROM tryout_hasil
          WHERE tryout_id = ? AND user_id = ?
          ORDER BY created_at DESC`,
         [id, req.user.id]
       );
+      const attemptsWithSummary = attempts.map((attempt) => {
+        const parsedDetails = parseTryoutDetails(attempt.details);
+        const summary = buildTryoutAnswerSummary(parsedDetails);
+        return {
+          ...attempt,
+          details: undefined,
+          total_questions: summary.totalQuestions,
+          answered_count: summary.answeredCount,
+          correct_count: summary.correctCount,
+          incorrect_count: summary.incorrectCount,
+          unanswered_count: summary.unansweredCount,
+        };
+      });
 
       const [allAttempts] = await pool.query(
         `SELECT h.user_id, u.name, h.total_score, h.max_score, h.percentage
@@ -1973,7 +2020,7 @@ app.get(
       res.json({
         tryout,
         total_peserta: total_peserta ?? 0,
-        attempts,
+        attempts: attemptsWithSummary,
         leaderboard,
       });
     } catch (err) {
@@ -2000,13 +2047,19 @@ app.get(
         return res.status(404).json({ message: "Hasil tidak ditemukan" });
       }
       const row = rows[0];
-      const details = row.details ? JSON.parse(row.details) : [];
+      const details = parseTryoutDetails(row.details);
+      const summary = buildTryoutAnswerSummary(details);
       res.json({
         id: row.id,
         total_score: row.total_score,
         max_score: row.max_score,
         percentage: row.percentage,
         lulus: !!row.lulus,
+        total_questions: summary.totalQuestions,
+        answered_count: summary.answeredCount,
+        correct_count: summary.correctCount,
+        incorrect_count: summary.incorrectCount,
+        unanswered_count: summary.unansweredCount,
         details,
         created_at: row.created_at,
       });
@@ -2092,6 +2145,7 @@ app.post(
           jawaban_benar: correct ? correct.label : null,
         };
       });
+      const summary = buildTryoutAnswerSummary(details);
       await pool.query(
         `INSERT INTO tryout_hasil (user_id, tryout_id, total_score, max_score, percentage, lulus, details)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -2111,6 +2165,11 @@ app.post(
         percentage,
         passingGrade,
         lulus,
+        totalQuestions: summary.totalQuestions,
+        answeredCount: summary.answeredCount,
+        correctCount: summary.correctCount,
+        incorrectCount: summary.incorrectCount,
+        unansweredCount: summary.unansweredCount,
         details,
       });
     } catch (err) {

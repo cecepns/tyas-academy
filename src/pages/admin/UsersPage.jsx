@@ -141,70 +141,77 @@ const UsersPage = () => {
       <div className="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden">
         <div className="w-full overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
-          <thead className="bg-slate-50 border-b border-slate-100">
-            <tr>
-              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
-                Nama
-              </th>
-              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
-                Email
-              </th>
-              <th className="px-4 py-3 text-left text-slate-600 font-semibold">
-                Role
-              </th>
-              <th className="px-4 py-3 text-right text-slate-600 font-semibold">
-                Aksi
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading && (
+            <thead className="bg-slate-50 border-b border-slate-100">
               <tr>
-                <td
-                  colSpan={4}
-                  className="px-4 py-8 text-center text-slate-500 text-sm"
-                >
-                  Memuat data...
-                </td>
+                <th className="px-4 py-3 text-left text-slate-600 font-semibold">
+                  Nama
+                </th>
+                <th className="px-4 py-3 text-left text-slate-600 font-semibold">
+                  Email
+                </th>
+                <th className="px-4 py-3 text-left text-slate-600 font-semibold">
+                  Role
+                </th>
+                <th className="px-4 py-3 text-right text-slate-600 font-semibold">
+                  Aksi
+                </th>
               </tr>
-            )}
-            {!loading && items.length === 0 && (
-              <tr>
-                <td
-                  colSpan={4}
-                  className="px-4 py-8 text-center text-slate-500 text-sm"
-                >
-                  Belum ada data.
-                </td>
-              </tr>
-            )}
-            {!loading &&
-              items.map((item) => (
-                <tr key={item.id} className="border-t border-slate-50 hover:bg-slate-50/50">
-                  <td className="px-4 py-3 font-medium text-slate-800">{item.name}</td>
-                  <td className="px-4 py-3 text-slate-600">{item.email}</td>
-                  <td className="px-4 py-3 capitalize text-slate-600">{item.role}</td>
-                  <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => onEdit(item)}
-                      className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 mr-2"
-                      aria-label="Edit"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setDeleteId(item.id)}
-                      className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-red-100 text-red-500 hover:bg-red-50"
-                      aria-label="Hapus"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+            </thead>
+            <tbody>
+              {loading && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-4 py-8 text-center text-slate-500 text-sm"
+                  >
+                    Memuat data...
                   </td>
                 </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+              )}
+              {!loading && items.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-4 py-8 text-center text-slate-500 text-sm"
+                  >
+                    Belum ada data.
+                  </td>
+                </tr>
+              )}
+              {!loading &&
+                items.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="border-t border-slate-50 hover:bg-slate-50/50"
+                  >
+                    <td className="px-4 py-3 font-medium text-slate-800">
+                      {item.name}
+                    </td>
+                    <td className="px-4 py-3 text-slate-600">{item.email}</td>
+                    <td className="px-4 py-3 capitalize text-slate-600">
+                      {item.role}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        onClick={() => onEdit(item)}
+                        className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 mr-2"
+                        aria-label="Edit"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setDeleteId(item.id)}
+                        className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-red-100 text-red-500 hover:bg-red-50"
+                        aria-label="Hapus"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-slate-500">
@@ -250,7 +257,9 @@ const UsersPage = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-2 text-slate-700 font-medium">Nama</label>
+                  <label className="block mb-2 text-slate-700 font-medium">
+                    Nama
+                  </label>
                   <input
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     {...register("name", { required: "Nama wajib diisi" })}
@@ -262,7 +271,9 @@ const UsersPage = () => {
                   )}
                 </div>
                 <div>
-                  <label className="block mb-2 text-slate-700 font-medium">Email</label>
+                  <label className="block mb-2 text-slate-700 font-medium">
+                    Email
+                  </label>
                   <input
                     type="email"
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -277,7 +288,9 @@ const UsersPage = () => {
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-2 text-slate-700 font-medium">Password</label>
+                  <label className="block mb-2 text-slate-700 font-medium">
+                    Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -286,8 +299,8 @@ const UsersPage = () => {
                         editing && !v
                           ? true
                           : v
-                          ? v.length >= 6
-                          : "Minimal 6 karakter",
+                            ? v.length >= 6
+                            : "Minimal 6 karakter",
                     })}
                   />
                   {errors.password && (
@@ -302,7 +315,9 @@ const UsersPage = () => {
                   )}
                 </div>
                 <div>
-                  <label className="block mb-2 text-slate-700 font-medium">Role</label>
+                  <label className="block mb-2 text-slate-700 font-medium">
+                    Role
+                  </label>
                   <select
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     {...register("role", { required: "Role wajib dipilih" })}
@@ -353,4 +368,3 @@ const UsersPage = () => {
 };
 
 export default UsersPage;
-

@@ -185,6 +185,9 @@ const UserTryoutDashboardPage = () => {
                   </div>
                   {statistikHasilId === a.id && (
                     <div className="w-full mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 grid grid-cols-2 gap-2">
+                      <span>
+                        Benar/Salah: {a.correct_count ?? 0}/{a.incorrect_count ?? 0}
+                      </span>
                       <span>Total skor: {a.total_score} / {a.max_score}</span>
                       <span>Persentase: {Number(a.percentage).toFixed(2)}%</span>
                       <span>Status: {a.lulus ? "Lulus" : "Belum lulus"}</span>
@@ -272,6 +275,10 @@ const UserTryoutDashboardPage = () => {
                 Skor: {pembahasanDetail.total_score}/{pembahasanDetail.max_score} (
                 {Number(pembahasanDetail.percentage).toFixed(2)}%) ·{" "}
                 {pembahasanDetail.lulus ? "Lulus" : "Belum lulus"}
+              </p>
+              <p className="text-sm text-slate-600">
+                Benar: {pembahasanDetail.correct_count ?? 0} · Salah:{" "}
+                {pembahasanDetail.incorrect_count ?? 0}
               </p>
               {Array.isArray(pembahasanDetail.details) &&
                 pembahasanDetail.details.map((d, idx) => (

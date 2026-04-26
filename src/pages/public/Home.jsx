@@ -285,7 +285,7 @@ const Home = () => {
                         : `Akses ${p.durasi_aktif} hari`}
                     </p>
                     {p.fitur_paket && (
-                      <p className="text-sm text-slate-600 whitespace-pre-line line-clamp-3 leading-relaxed">
+                      <p className="text-sm text-slate-600 whitespace-pre-line leading-relaxed">
                         {p.fitur_paket}
                       </p>
                     )}

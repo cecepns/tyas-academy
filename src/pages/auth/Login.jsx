@@ -27,7 +27,7 @@ const Login = () => {
       if (user.role === "admin") {
         navigate("/admin");
       } else {
-        navigate("/user");
+        navigate("/user/paket");
       }
     } catch (e) {
       show("error", e.response?.data?.message || "Gagal login");

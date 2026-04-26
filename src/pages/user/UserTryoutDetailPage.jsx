@@ -23,6 +23,11 @@ const UserTryoutDetailPage = () => {
   const [remaining, setRemaining] = useState(null);
   const [autoSubmitted, setAutoSubmitted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const answeredCount = soal.reduce(
+    (acc, item) => (answers[item.bank_soal_id] ? acc + 1 : acc),
+    0,
+  );
+  const unansweredCount = Math.max(soal.length - answeredCount, 0);
 
   useEffect(() => {
     const load = async () => {
@@ -146,76 +151,80 @@ const UserTryoutDetailPage = () => {
       </div>
 
       {soal.length > 0 ? (
-        <div className="space-y-4">
-          {(() => {
-            const s = soal[currentIndex];
-            if (!s) return null;
-            return (
-              <div
-                key={s.bank_soal_id}
-                className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-slate-900">
-                    Soal {currentIndex + 1}
-                  </p>
-                  <p className="text-xs md:text-sm text-slate-500">
-                    {currentIndex + 1} dari {soal.length}
-                  </p>
-                </div>
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4 items-start">
+          <div className="space-y-4">
+            {(() => {
+              const s = soal[currentIndex];
+              if (!s) return null;
+              return (
                 <div
-                  className="prose prose-sm max-w-none mb-3 !text-xl"
-                  dangerouslySetInnerHTML={{ __html: s.soal }}
-                />
-                <div className="space-y-2">
-                  {s.opsi.map((o) => (
-                    <label
-                      key={o.label}
-                      className="flex items-start gap-2 cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        name={`soal-${s.bank_soal_id}`}
-                        className="mt-0.5"
-                        checked={answers[s.bank_soal_id] === o.label}
-                        onChange={() =>
-                          handleAnswerChange(s.bank_soal_id, o.label)
-                        }
-                      />
-                      <span className="text-slate-700">
-                        <span className="font-semibold mr-1 text-lg">{o.label}.</span>
-                        <span className="text-lg" dangerouslySetInnerHTML={{ __html: o.konten }} />
-                      </span>
-                    </label>
-                  ))}
+                  key={s.bank_soal_id}
+                  className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-semibold text-slate-900">
+                      Soal {currentIndex + 1}
+                    </p>
+                    <p className="text-xs md:text-sm text-slate-500">
+                      {currentIndex + 1} dari {soal.length}
+                    </p>
+                  </div>
+                  <div
+                    className="prose prose-sm max-w-none mb-3 !text-xl"
+                    dangerouslySetInnerHTML={{ __html: s.soal }}
+                  />
+                  <div className="space-y-2">
+                    {s.opsi.map((o) => (
+                      <label
+                        key={o.label}
+                        className="flex items-start gap-2 cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name={`soal-${s.bank_soal_id}`}
+                          className="mt-1"
+                          checked={answers[s.bank_soal_id] === o.label}
+                          onChange={() =>
+                            handleAnswerChange(s.bank_soal_id, o.label)
+                          }
+                        />
+                        <span className="text-slate-700 flex items-start gap-1.5 leading-relaxed">
+                          <span className="font-semibold text-lg shrink-0">
+                            {o.label}.
+                          </span>
+                          <span
+                            className="text-lg [&_p]:m-0 [&_p]:inline"
+                            dangerouslySetInnerHTML={{ __html: o.konten }}
+                          />
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })()}
+              );
+            })()}
 
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              disabled={currentIndex === 0}
-              onClick={() => setCurrentIndex((idx) => Math.max(0, idx - 1))}
-              className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
-            >
-              Sebelumnya
-            </button>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between">
               <button
                 type="button"
-                disabled={currentIndex === soal.length - 1}
-                onClick={() =>
-                  setCurrentIndex((idx) => Math.min(soal.length - 1, idx + 1))
-                }
+                disabled={currentIndex === 0}
+                onClick={() => setCurrentIndex((idx) => Math.max(0, idx - 1))}
                 className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
               >
-                Berikutnya
+                Sebelumnya
               </button>
-              {currentIndex === soal.length - 1 &&
-                remaining !== 0 &&
-                !result && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={currentIndex === soal.length - 1}
+                  onClick={() =>
+                    setCurrentIndex((idx) => Math.min(soal.length - 1, idx + 1))
+                  }
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 disabled:opacity-40"
+                >
+                  Berikutnya
+                </button>
+                {currentIndex === soal.length - 1 && remaining !== 0 && !result && (
                   <button
                     type="button"
                     onClick={() => handleSubmit(false)}
@@ -225,6 +234,50 @@ const UserTryoutDetailPage = () => {
                     {submitting ? "Mengirim..." : "Kirim Jawaban"}
                   </button>
                 )}
+              </div>
+            </div>
+          </div>
+          <div className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-primary-500" />
+              <p className="text-slate-700">
+                Sudah dikerjakan:{" "}
+                <span className="font-semibold">{answeredCount}</span>
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-300" />
+              <p className="text-slate-700">
+                Belum dikerjakan:{" "}
+                <span className="font-semibold">{unansweredCount}</span>
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-100">
+              <p className="text-xs uppercase tracking-wide text-slate-500 mb-2">
+                Nomor Soal
+              </p>
+              <div className="grid grid-cols-8 gap-2">
+                {soal.map((item, idx) => {
+                  const isActive = idx === currentIndex;
+                  const isAnswered = !!answers[item.bank_soal_id];
+                  return (
+                    <button
+                      key={item.bank_soal_id}
+                      type="button"
+                      onClick={() => setCurrentIndex(idx)}
+                      className={`w-8 h-8 rounded-lg border text-xs font-medium transition ${
+                        isActive
+                          ? "border-primary-600 bg-primary-600 text-white"
+                          : isAnswered
+                            ? "border-primary-200 bg-primary-50 text-primary-700"
+                            : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      {idx + 1}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -247,6 +300,10 @@ const UserTryoutDetailPage = () => {
           <div className="bg-white border border-slate-100 rounded-2xl shadow-md p-4 text-sm">
             <p className="font-semibold text-slate-900 mb-1">Hasil Tryout</p>
             <p className="text-slate-600">
+              Benar: {result.correctCount} dari {result.totalQuestions} soal
+            </p>
+            <p className="text-slate-600">Salah: {result.incorrectCount} soal</p>
+            <p className="text-slate-600">
               Skor: {result.totalScore} / {result.maxScore}
             </p>
             <p className="text-slate-600">
@@ -260,7 +317,7 @@ const UserTryoutDetailPage = () => {
                 result.lulus ? "text-emerald-600" : "text-rose-600"
               }`}
             >
-              {result.lulus ? "LULUS" : "BELUM LULUS"}
+              {result.lulus ? "Lulus PG" : "Tidak Lulus PG"}
             </p>
           </div>
 
