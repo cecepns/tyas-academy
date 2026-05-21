@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://api-inventory.isavralabel.com/tyasacademy/api"
+  baseURL: import.meta.env.VITE_API_URL || "https://api.kingcreativestudio.my.id/tyasacademy/api"
 });
 
 api.interceptors.request.use((config) => {

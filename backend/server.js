@@ -638,6 +638,21 @@ const parseTryoutDetails = (rawDetails) => {
   }
 };
 
+const getTryoutMaxScore = async (tryoutId) => {
+  const [rows] = await pool.query(
+    `SELECT SUM(correct_scores.correct_skor) AS max_score
+     FROM (
+       SELECT ts.bank_soal_id, MAX(o.skor) AS correct_skor
+       FROM tryout_soal ts
+       JOIN opsi_jawaban o ON o.bank_soal_id = ts.bank_soal_id
+       WHERE ts.tryout_id = ? AND o.benar = 1
+       GROUP BY ts.bank_soal_id
+     ) AS correct_scores`,
+    [tryoutId]
+  );
+  return Number(rows?.[0]?.max_score || 0);
+};
+
 app.get("/api/admin/tryout", authMiddleware(["admin"]), async (req, res) => {
   await listWithSearch(req, res, "tryout", ["judul_tryout", "slug"]);
 });
@@ -1980,8 +1995,10 @@ app.get(
         [id]
       );
 
+      const currentMaxScore = await getTryoutMaxScore(id);
+
       const [attempts] = await pool.query(
-        `SELECT id, total_score, max_score, percentage, lulus, details, created_at
+        `SELECT id, total_score, lulus, details, created_at
          FROM tryout_hasil
          WHERE tryout_id = ? AND user_id = ?
          ORDER BY created_at DESC`,
@@ -1990,9 +2007,15 @@ app.get(
       const attemptsWithSummary = attempts.map((attempt) => {
         const parsedDetails = parseTryoutDetails(attempt.details);
         const summary = buildTryoutAnswerSummary(parsedDetails);
+        const normalizedMaxScore = currentMaxScore;
+        const normalizedPercentage = normalizedMaxScore
+          ? (Number(attempt.total_score || 0) / normalizedMaxScore) * 100
+          : 0;
         return {
           ...attempt,
           details: undefined,
+          max_score: normalizedMaxScore,
+          percentage: normalizedPercentage.toFixed(2),
           total_questions: summary.totalQuestions,
           answered_count: summary.answeredCount,
           correct_count: summary.correctCount,
@@ -2002,19 +2025,33 @@ app.get(
       });
 
       const [allAttempts] = await pool.query(
-        `SELECT h.user_id, u.name, h.total_score, h.max_score, h.percentage
+        `SELECT h.id, h.user_id, u.name, h.total_score
          FROM tryout_hasil h
          JOIN users u ON u.id = h.user_id
          WHERE h.tryout_id = ?
-         ORDER BY h.percentage DESC, h.id DESC`,
+         ORDER BY h.id DESC`,
         [id]
       );
       const byUser = new Map();
       for (const row of allAttempts) {
-        if (!byUser.has(row.user_id)) byUser.set(row.user_id, row);
+        if (!byUser.has(row.user_id)) {
+          const normalizedMaxScore = currentMaxScore;
+          const normalizedPercentage = normalizedMaxScore
+            ? (Number(row.total_score || 0) / normalizedMaxScore) * 100
+            : 0;
+          byUser.set(row.user_id, {
+            user_id: row.user_id,
+            name: row.name,
+            total_score: row.total_score,
+            max_score: normalizedMaxScore,
+            percentage: normalizedPercentage.toFixed(2),
+          });
+        }
       }
       const leaderboard = [...byUser.values()].sort(
-        (a, b) => Number(b.percentage) - Number(a.percentage)
+        (a, b) =>
+          Number(b.percentage) - Number(a.percentage) ||
+          Number(b.total_score) - Number(a.total_score)
       );
 
       res.json({
@@ -2047,13 +2084,17 @@ app.get(
         return res.status(404).json({ message: "Hasil tidak ditemukan" });
       }
       const row = rows[0];
+      const currentMaxScore = await getTryoutMaxScore(id);
       const details = parseTryoutDetails(row.details);
       const summary = buildTryoutAnswerSummary(details);
+      const normalizedPercentage = currentMaxScore
+        ? (Number(row.total_score || 0) / currentMaxScore) * 100
+        : 0;
       res.json({
         id: row.id,
         total_score: row.total_score,
-        max_score: row.max_score,
-        percentage: row.percentage,
+        max_score: currentMaxScore,
+        percentage: normalizedPercentage.toFixed(2),
         lulus: !!row.lulus,
         total_questions: summary.totalQuestions,
         answered_count: summary.answeredCount,
@@ -2105,10 +2146,8 @@ app.post(
         [id]
       );
       let totalScore = 0;
-      let maxScore = 0;
       const perQuestion = new Map();
       for (const row of soalRows) {
-        maxScore += row.skor;
         const userAnswer = answers[row.bank_soal_id];
         if (userAnswer && userAnswer === row.label && row.benar) {
           totalScore += row.skor;
@@ -2129,6 +2168,18 @@ app.post(
           benar: !!row.benar,
         });
       }
+      const maxScore = Array.from(perQuestion.values()).reduce((acc, q) => {
+        const correctOption = q.opsi.find((o) => o.benar);
+        if (correctOption) {
+          return acc + Number(correctOption.skor || 0);
+        }
+        // Fallback for malformed data: use highest option score in the question.
+        const maxOptionScore = q.opsi.reduce(
+          (max, opt) => Math.max(max, Number(opt.skor || 0)),
+          0
+        );
+        return acc + maxOptionScore;
+      }, 0);
       const percentage = maxScore ? (totalScore / maxScore) * 100 : 0;
       const lulus = totalScore >= passingGrade;
       const details = Array.from(perQuestion.values()).map((q) => {

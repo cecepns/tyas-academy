@@ -1,5 +1,5 @@
 const getFileBase = () => {
-  const apiBase = import.meta.env.VITE_API_URL || "https://api-inventory.isavralabel.com/tyasacademy/api";
+  const apiBase = import.meta.env.VITE_API_URL || "https://api.kingcreativestudio.my.id/tyasacademy/api";
   return apiBase.replace(/\/api\/?$/, "");
 };
 
