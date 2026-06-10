@@ -24,7 +24,7 @@ const Home = () => {
           api.get("/public/overview"),
           api.get("/public/testimoni"),
           api.get("/public/paket", {
-            params: { page: 1, limit: 6 },
+            params: { page: 1, limit: 15 },
           }),
         ]);
         setOverview(oRes.data);
@@ -261,7 +261,7 @@ const Home = () => {
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {paket.slice(0, 6).map((p) => (
+              {paket.slice(0, 15).map((p) => (
                 <div
                   key={p.id}
                   className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col"
