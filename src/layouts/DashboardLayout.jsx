@@ -72,7 +72,7 @@ const DashboardLayout = ({ role }) => {
       )}
       <aside
         className={`bg-white/95 backdrop-blur border-r border-slate-200 shadow-sm flex flex-col transition-all duration-200 ease-out
-          fixed md:relative inset-y-0 left-0 z-10 w-64
+          fixed md:relative inset-y-0 left-0 z-50 w-64
           ${collapsed ? "md:w-16" : "md:w-64"}
           ${mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
