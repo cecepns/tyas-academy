@@ -29,6 +29,7 @@ import UserTransaksiPage from "./pages/user/UserTransaksiPage";
 import UserMateriDetailPage from "./pages/user/UserMateriDetailPage";
 import UserTryoutDashboardPage from "./pages/user/UserTryoutDashboardPage";
 import UserTryoutDetailPage from "./pages/user/UserTryoutDetailPage";
+import UserHasilTryoutPage from "./pages/user/UserHasilTryoutPage";
 
 function App() {
   return (
@@ -82,6 +83,10 @@ function App() {
               <Route
                 path="/user/tryout/:id/kerjakan"
                 element={<UserTryoutDetailPage />}
+              />
+              <Route
+                path="/user/hasil-tryout"
+                element={<UserHasilTryoutPage />}
               />
               <Route
                 path="/user/bimbel"

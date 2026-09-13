@@ -38,14 +38,24 @@ const UserResourcesPage = ({ type }) => {
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
-          {titleMap[type]}
-        </h1>
-        <p className="text-base text-slate-500 mt-1">
-          Daftar {titleMap[type].toLowerCase()} yang bisa kamu akses dari paket
-          yang sudah dibeli.
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl md:text-2xl font-semibold text-slate-900">
+            {titleMap[type]}
+          </h1>
+          <p className="text-base text-slate-500 mt-1">
+            Daftar {titleMap[type].toLowerCase()} yang bisa kamu akses dari paket
+            yang sudah dibeli.
+          </p>
+        </div>
+        {type === "tryout" && (
+          <Link
+            to="/user/hasil-tryout"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition shadow-sm"
+          >
+            Lihat Hasil & Pembahasan →
+          </Link>
+        )}
       </div>
 
       {loading && <p className="text-sm text-slate-500">Memuat data...</p>}

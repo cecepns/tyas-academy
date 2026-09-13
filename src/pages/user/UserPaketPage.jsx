@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../../utils/apiClient";
 import getFileBase from "../../utils/fileBase";
@@ -9,6 +9,7 @@ const UserPaketPage = () => {
   const [paket, setPaket] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(null);
+  const paymentButtonRef = useRef(null);
   const {
     register,
     handleSubmit,
@@ -40,6 +41,18 @@ const UserPaketPage = () => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSelectPaket = (p) => {
+    setSelected(p);
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setTimeout(() => {
+        paymentButtonRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 100);
+    }
+  };
 
   const handleValidatePromo = async () => {
     if (!selected) {
@@ -113,7 +126,7 @@ const UserPaketPage = () => {
               <button
                 type="button"
                 key={p.id}
-                onClick={() => setSelected(p)}
+                onClick={() => handleSelectPaket(p)}
                 className={`w-full text-left bg-white border rounded-2xl shadow-md p-4 text-sm transition ${
                   selected?.id === p.id
                     ? "border-primary-500 ring-2 ring-primary-200"
@@ -228,6 +241,7 @@ const UserPaketPage = () => {
             </div>
 
             <button
+              ref={paymentButtonRef}
               type="submit"
               disabled={isSubmitting}
               className="w-full px-4 py-3 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 disabled:opacity-60"

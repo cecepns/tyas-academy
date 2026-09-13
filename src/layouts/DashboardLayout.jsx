@@ -17,6 +17,7 @@ import {
   ShoppingBag,
   Menu,
   X,
+  Award,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import Logo from "../assets/logo.webp";
@@ -47,6 +48,7 @@ const DashboardLayout = ({ role }) => {
     { to: "/user/bimbel", label: "Bimbel", icon: GraduationCap },
     { to: "/user/materi", label: "Materi", icon: BookOpen },
     { to: "/user/tryout", label: "Try Out", icon: ListChecks },
+    { to: "/user/hasil-tryout", label: "Hasil Try Out", icon: Award },
     { to: "/user/transaksi", label: "Transaksi", icon: Receipt }
   ];
 

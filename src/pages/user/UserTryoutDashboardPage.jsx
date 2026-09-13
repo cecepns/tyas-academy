@@ -132,13 +132,29 @@ const UserTryoutDashboardPage = () => {
       {/* Card 2: Riwayat pengerjaan */}
       <div className="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden">
         <div className="p-5">
-          <div className="flex items-center gap-2 text-slate-700 mb-3">
-            <History className="w-5 h-5 text-primary-500" />
-            <span className="font-medium">Riwayat Pengerjaan</span>
-            <span className="text-sm text-slate-500 font-normal">
-              (Total: {attempts.length} kali)
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2 text-slate-700">
+              <History className="w-5 h-5 text-primary-500" />
+              <span className="font-semibold text-slate-900">Riwayat Pengerjaan & Pembahasan</span>
+              <span className="text-sm text-slate-500 font-normal">
+                (Total: {attempts.length} kali)
+              </span>
+            </div>
+            <Link
+              to="/user/hasil-tryout"
+              className="text-xs sm:text-sm text-primary-600 hover:text-primary-700 font-medium hover:underline"
+            >
+              Semua Hasil Try Out →
+            </Link>
           </div>
+          
+          <div className="mb-4 p-3 rounded-xl bg-blue-50/70 border border-blue-100 text-xs text-blue-800 flex items-start gap-2">
+            <BookOpen className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+            <p>
+              Hasil tryout dan pembahasan tersimpan secara permanen. Anda dapat meninjau statistik dan kunci pembahasan kapan saja setelah login tanpa perlu mengerjakan ulang.
+            </p>
+          </div>
+
           {attempts.length === 0 ? (
             <p className="text-sm text-slate-500 py-2">
               Belum ada riwayat. Klik &quot;Mulai tryout&quot; untuk mengerjakan.
@@ -148,18 +164,18 @@ const UserTryoutDashboardPage = () => {
               {attempts.map((a) => (
                 <li
                   key={a.id}
-                  className="flex flex-wrap items-center justify-between gap-2 py-3 px-3 rounded-xl bg-slate-50 border border-slate-100"
+                  className="flex flex-wrap items-center justify-between gap-2 py-3 px-3.5 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition"
                 >
                   <div>
                     <p className="text-sm font-medium text-slate-800">
                       {formatDate(a.created_at)} · {formatTime(a.created_at)}
                     </p>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Skor: {a.total_score}/{a.max_score} ({Number(a.percentage).toFixed(1)}%)
+                      Skor: <strong className="text-slate-800">{a.total_score}/{a.max_score}</strong> ({Number(a.percentage).toFixed(1)}%)
                       {a.lulus ? (
-                        <span className="ml-2 text-emerald-600 font-medium">Lulus</span>
+                        <span className="ml-2 px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 font-medium">Lulus</span>
                       ) : (
-                        <span className="ml-2 text-rose-600 font-medium">Belum lulus</span>
+                        <span className="ml-2 px-2 py-0.5 rounded-md bg-rose-100 text-rose-700 font-medium">Belum lulus</span>
                       )}
                     </p>
                   </div>
@@ -169,7 +185,7 @@ const UserTryoutDashboardPage = () => {
                       onClick={() =>
                         setStatistikHasilId(statistikHasilId === a.id ? null : a.id)
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
                     >
                       <BarChart3 className="w-3.5 h-3.5" />
                       Statistik
@@ -177,20 +193,20 @@ const UserTryoutDashboardPage = () => {
                     <button
                       type="button"
                       onClick={() => openPembahasan(a.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary-200 text-xs font-medium text-primary-700 bg-primary-50 hover:bg-primary-100"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary-600 text-xs font-medium text-white hover:bg-primary-700 shadow-xs transition"
                     >
                       <BookOpen className="w-3.5 h-3.5" />
-                      Pembahasan
+                      Lihat Pembahasan
                     </button>
                   </div>
                   {statistikHasilId === a.id && (
-                    <div className="w-full mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 grid grid-cols-2 gap-2">
+                    <div className="w-full mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 grid grid-cols-2 sm:grid-cols-4 gap-2 bg-white p-3 rounded-lg">
                       <span>
-                        Benar/Salah: {a.correct_count ?? 0}/{a.incorrect_count ?? 0}
+                        Benar/Salah: <strong className="text-slate-800">{a.correct_count ?? 0}/{a.incorrect_count ?? 0}</strong>
                       </span>
-                      <span>Total skor: {a.total_score} / {a.max_score}</span>
-                      <span>Persentase: {Number(a.percentage).toFixed(2)}%</span>
-                      <span>Status: {a.lulus ? "Lulus" : "Belum lulus"}</span>
+                      <span>Total skor: <strong className="text-slate-800">{a.total_score} / {a.max_score}</strong></span>
+                      <span>Persentase: <strong className="text-slate-800">{Number(a.percentage).toFixed(2)}%</strong></span>
+                      <span>Status: <strong className={a.lulus ? "text-emerald-600" : "text-rose-600"}>{a.lulus ? "Lulus PG" : "Belum lulus"}</strong></span>
                     </div>
                   )}
                 </li>
@@ -205,7 +221,7 @@ const UserTryoutDashboardPage = () => {
         <div className="p-5">
           <div className="flex items-center gap-2 text-slate-700 mb-3">
             <Trophy className="w-5 h-5 text-primary-500" />
-            <span className="font-medium">Leaderboard</span>
+            <span className="font-semibold text-slate-900">Leaderboard</span>
           </div>
           {leaderboard.length === 0 ? (
             <p className="text-sm text-slate-500 py-2">
@@ -245,77 +261,149 @@ const UserTryoutDashboardPage = () => {
 
       {/* Modal Pembahasan */}
       {pembahasanLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <p className="text-white font-medium">Memuat pembahasan...</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 shadow-xl text-slate-700 text-sm font-medium flex items-center gap-3">
+            <div className="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+            Memuat pembahasan...
+          </div>
         </div>
       )}
       {pembahasanDetail && !pembahasanLoading && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 !mt-0"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm !mt-0"
           onClick={closePembahasan}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col"
+            className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[88vh] overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Pembahasan · {formatDate(pembahasanDetail.created_at)} {formatTime(pembahasanDetail.created_at)}
-              </h2>
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+              <div>
+                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                  Pembahasan Try Out
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Dikerjakan pada {formatDate(pembahasanDetail.created_at)} pukul {formatTime(pembahasanDetail.created_at)}
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={closePembahasan}
-                className="p-2 rounded-lg text-slate-500 hover:bg-slate-100"
+                className="p-2 rounded-xl text-slate-500 hover:bg-slate-200 transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-4 overflow-y-auto flex-1 space-y-3">
-              <p className="text-sm text-slate-600">
-                Skor: {pembahasanDetail.total_score}/{pembahasanDetail.max_score} (
-                {Number(pembahasanDetail.percentage).toFixed(2)}%) ·{" "}
-                {pembahasanDetail.lulus ? "Lulus" : "Belum lulus"}
-              </p>
-              <p className="text-sm text-slate-600">
-                Benar: {pembahasanDetail.correct_count ?? 0} · Salah:{" "}
-                {pembahasanDetail.incorrect_count ?? 0}
-              </p>
+            
+            <div className="px-4 sm:px-5 py-3 bg-white border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="font-semibold text-slate-900">
+                  Skor: {pembahasanDetail.total_score}/{pembahasanDetail.max_score} (
+                  {Number(pembahasanDetail.percentage).toFixed(1)}%)
+                </span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                    pembahasanDetail.lulus
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-rose-100 text-rose-800"
+                  }`}
+                >
+                  {pembahasanDetail.lulus ? "Lulus Passing Grade" : "Belum Lulus"}
+                </span>
+                <span className="text-slate-600">
+                  Benar: <strong className="text-emerald-600">{pembahasanDetail.correct_count ?? 0}</strong> · Salah:{" "}
+                  <strong className="text-rose-600">{pembahasanDetail.incorrect_count ?? 0}</strong>
+                </span>
+              </div>
+            </div>
+
+            <div className="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4 bg-slate-50/50">
               {Array.isArray(pembahasanDetail.details) &&
-                pembahasanDetail.details.map((d, idx) => (
-                  <div
-                    key={d.bank_soal_id}
-                    className="border border-slate-100 rounded-xl p-3 bg-slate-50"
-                  >
-                    <p className="font-semibold text-slate-800 mb-1">
-                      Soal {idx + 1}
-                    </p>
+                pembahasanDetail.details.map((d, idx) => {
+                  const isBenar =
+                    d.jawaban_user &&
+                    d.jawaban_benar &&
+                    d.jawaban_user.trim().toUpperCase() ===
+                      d.jawaban_benar.trim().toUpperCase();
+
+                  return (
                     <div
-                      className="prose prose-sm max-w-none mb-2"
-                      dangerouslySetInnerHTML={{ __html: d.soal }}
-                    />
-                    <p className="text-xs text-slate-700 mb-1">
-                      Jawaban kamu:{" "}
-                      <span className="font-semibold">
-                        {d.jawaban_user || "-"}
-                      </span>
-                    </p>
-                    <p className="text-xs text-slate-700 mb-2">
-                      Jawaban benar:{" "}
-                      <span className="font-semibold">
-                        {d.jawaban_benar || "-"}
-                      </span>
-                    </p>
-                    {d.pembahasan && (
-                      <div className="text-xs text-slate-600">
-                        <p className="font-semibold mb-1">Pembahasan:</p>
-                        <div
-                          className="prose prose-[0.7rem] max-w-none"
-                          dangerouslySetInnerHTML={{ __html: d.pembahasan }}
-                        />
+                      key={d.bank_soal_id || idx}
+                      className={`border rounded-2xl p-4 sm:p-5 bg-white shadow-xs ${
+                        isBenar ? "border-emerald-200" : "border-rose-200"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="font-bold text-slate-800 text-sm">
+                          Soal {idx + 1}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                            isBenar
+                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                              : "bg-rose-50 text-rose-700 border border-rose-200"
+                          }`}
+                        >
+                          {isBenar ? "Benar" : "Salah"}
+                        </span>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      
+                      <div
+                        className="prose prose-sm max-w-none mb-3 text-slate-800 text-sm leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: d.soal }}
+                      />
+
+                      <div className="grid sm:grid-cols-2 gap-2 text-xs mb-3">
+                        <div
+                          className={`p-2.5 rounded-xl border ${
+                            isBenar
+                              ? "bg-emerald-50/60 border-emerald-200 text-emerald-900"
+                              : "bg-rose-50/60 border-rose-200 text-rose-900"
+                          }`}
+                        >
+                          <span className="font-semibold block text-[11px] uppercase tracking-wider mb-0.5 opacity-75">
+                            Jawaban Anda:
+                          </span>
+                          <span className="text-sm font-bold">
+                            {d.jawaban_user ? `${d.jawaban_user}` : "(Tidak Dijawab)"}
+                          </span>
+                        </div>
+
+                        <div className="p-2.5 rounded-xl border bg-emerald-50/60 border-emerald-200 text-emerald-900">
+                          <span className="font-semibold block text-[11px] uppercase tracking-wider mb-0.5 opacity-75">
+                            Kunci Jawaban:
+                          </span>
+                          <span className="text-sm font-bold">
+                            {d.jawaban_benar || "-"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {d.pembahasan && (
+                        <div className="mt-3 pt-3 border-t border-slate-100 bg-amber-50/40 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-4 rounded-b-2xl">
+                          <p className="font-semibold text-xs text-amber-900 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                            <BookOpen className="w-3.5 h-3.5 text-amber-600" />
+                            Pembahasan:
+                          </p>
+                          <div
+                            className="prose prose-sm max-w-none text-slate-700 text-xs sm:text-sm leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: d.pembahasan }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+
+            <div className="p-4 border-t border-slate-100 bg-white flex justify-end">
+              <button
+                type="button"
+                onClick={closePembahasan}
+                className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium transition"
+              >
+                Tutup Pembahasan
+              </button>
             </div>
           </div>
         </div>

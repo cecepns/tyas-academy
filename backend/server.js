@@ -2111,6 +2111,106 @@ app.get(
   }
 );
 
+// Semua riwayat hasil tryout untuk user yang login
+app.get(
+  "/api/user/tryout-hasil",
+  authMiddleware(["user", "admin"]),
+  async (req, res) => {
+    try {
+      const [rows] = await pool.query(
+        `SELECT h.id, h.tryout_id, h.total_score, h.max_score, h.percentage, h.lulus, h.details, h.created_at,
+                t.judul_tryout, t.banner_image, t.durasi
+         FROM tryout_hasil h
+         JOIN tryout t ON h.tryout_id = t.id
+         WHERE h.user_id = ?
+         ORDER BY h.created_at DESC`,
+        [req.user.id]
+      );
+      const results = await Promise.all(
+        rows.map(async (row) => {
+          const currentMaxScore = (await getTryoutMaxScore(row.tryout_id)) || row.max_score;
+          const parsedDetails = parseTryoutDetails(row.details);
+          const summary = buildTryoutAnswerSummary(parsedDetails);
+          const normalizedPercentage = currentMaxScore
+            ? (Number(row.total_score || 0) / currentMaxScore) * 100
+            : 0;
+          return {
+            id: row.id,
+            tryout_id: row.tryout_id,
+            judul_tryout: row.judul_tryout,
+            banner_image: row.banner_image,
+            durasi: row.durasi,
+            total_score: row.total_score,
+            max_score: currentMaxScore,
+            percentage: normalizedPercentage.toFixed(2),
+            lulus: !!row.lulus,
+            total_questions: summary.totalQuestions,
+            answered_count: summary.answeredCount,
+            correct_count: summary.correctCount,
+            incorrect_count: summary.incorrectCount,
+            unanswered_count: summary.unansweredCount,
+            created_at: row.created_at,
+          };
+        })
+      );
+      res.json(results);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+// Detail hasil tryout by hasilId untuk user yang login
+app.get(
+  "/api/user/tryout-hasil/:hasilId",
+  authMiddleware(["user", "admin"]),
+  async (req, res) => {
+    const { hasilId } = req.params;
+    try {
+      const [rows] = await pool.query(
+        `SELECT h.id, h.user_id, h.tryout_id, h.total_score, h.max_score, h.percentage, h.lulus, h.details, h.created_at,
+                t.judul_tryout, t.banner_image, t.durasi
+         FROM tryout_hasil h
+         JOIN tryout t ON h.tryout_id = t.id
+         WHERE h.id = ? AND h.user_id = ?`,
+        [hasilId, req.user.id]
+      );
+      if (!rows.length) {
+        return res.status(404).json({ message: "Hasil tidak ditemukan" });
+      }
+      const row = rows[0];
+      const currentMaxScore = (await getTryoutMaxScore(row.tryout_id)) || row.max_score;
+      const details = parseTryoutDetails(row.details);
+      const summary = buildTryoutAnswerSummary(details);
+      const normalizedPercentage = currentMaxScore
+        ? (Number(row.total_score || 0) / currentMaxScore) * 100
+        : 0;
+      res.json({
+        id: row.id,
+        tryout_id: row.tryout_id,
+        judul_tryout: row.judul_tryout,
+        banner_image: row.banner_image,
+        durasi: row.durasi,
+        total_score: row.total_score,
+        max_score: currentMaxScore,
+        percentage: normalizedPercentage.toFixed(2),
+        lulus: !!row.lulus,
+        total_questions: summary.totalQuestions,
+        answered_count: summary.answeredCount,
+        correct_count: summary.correctCount,
+        incorrect_count: summary.incorrectCount,
+        unanswered_count: summary.unansweredCount,
+        details,
+        created_at: row.created_at,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
 // Simplified tryout attempt endpoint with passing grade logic
 app.post(
   "/api/user/tryout/:id/submit",
