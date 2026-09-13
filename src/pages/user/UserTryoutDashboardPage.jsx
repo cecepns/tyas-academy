@@ -147,7 +147,7 @@ const UserTryoutDashboardPage = () => {
               Semua Hasil Try Out →
             </Link>
           </div>
-          
+
           <div className="mb-4 p-3 rounded-xl bg-blue-50/70 border border-blue-100 text-xs text-blue-800 flex items-start gap-2">
             <BookOpen className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
             <p>
@@ -270,7 +270,7 @@ const UserTryoutDashboardPage = () => {
       )}
       {pembahasanDetail && !pembahasanLoading && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm !mt-0"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm !mt-0 !mt-0"
           onClick={closePembahasan}
         >
           <div
@@ -294,7 +294,7 @@ const UserTryoutDashboardPage = () => {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="px-4 sm:px-5 py-3 bg-white border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="font-semibold text-slate-900">
@@ -302,11 +302,10 @@ const UserTryoutDashboardPage = () => {
                   {Number(pembahasanDetail.percentage).toFixed(1)}%)
                 </span>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                    pembahasanDetail.lulus
+                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${pembahasanDetail.lulus
                       ? "bg-emerald-100 text-emerald-800"
                       : "bg-rose-100 text-rose-800"
-                  }`}
+                    }`}
                 >
                   {pembahasanDetail.lulus ? "Lulus Passing Grade" : "Belum Lulus"}
                 </span>
@@ -318,7 +317,12 @@ const UserTryoutDashboardPage = () => {
             </div>
 
             <div className="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4 bg-slate-50/50">
-              {Array.isArray(pembahasanDetail.details) &&
+              {!Array.isArray(pembahasanDetail.details) ||
+              pembahasanDetail.details.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-slate-100 p-8 text-center text-sm text-slate-500">
+                  Tidak ada data soal untuk pembahasan ini.
+                </div>
+              ) : (
                 pembahasanDetail.details.map((d, idx) => {
                   const isBenar =
                     d.jawaban_user &&
@@ -347,11 +351,60 @@ const UserTryoutDashboardPage = () => {
                           {isBenar ? "Benar" : "Salah"}
                         </span>
                       </div>
-                      
+
                       <div
                         className="prose prose-sm max-w-none mb-3 text-slate-800 text-sm leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: d.soal }}
                       />
+
+                      {/* Options */}
+                      {Array.isArray(d.opsi) && d.opsi.length > 0 && (
+                        <div className="space-y-1.5 mb-3">
+                          {d.opsi.map((o) => {
+                            const isUserChoice =
+                              d.jawaban_user &&
+                              d.jawaban_user.trim().toUpperCase() ===
+                                o.label.trim().toUpperCase();
+                            const isCorrectChoice =
+                              d.jawaban_benar &&
+                              d.jawaban_benar.trim().toUpperCase() ===
+                                o.label.trim().toUpperCase();
+
+                            return (
+                              <div
+                                key={o.label}
+                                className={`px-3 py-2 rounded-xl text-xs flex items-start gap-2 border ${
+                                  isCorrectChoice
+                                    ? "bg-emerald-50/80 border-emerald-300 text-emerald-950 font-medium"
+                                    : isUserChoice
+                                    ? "bg-rose-50/80 border-rose-300 text-rose-950"
+                                    : "bg-slate-50 border-slate-100 text-slate-700"
+                                }`}
+                              >
+                                <span className="font-bold shrink-0">
+                                  {o.label}.
+                                </span>
+                                <div
+                                  className="prose prose-xs max-w-none [&_p]:m-0 [&_p]:inline flex-1"
+                                  dangerouslySetInnerHTML={{
+                                    __html: o.konten,
+                                  }}
+                                />
+                                {isCorrectChoice && (
+                                  <span className="ml-auto shrink-0 font-semibold text-emerald-700 text-[10px] bg-emerald-100 px-2 py-0.5 rounded-md">
+                                    Kunci Benar
+                                  </span>
+                                )}
+                                {isUserChoice && !isCorrectChoice && (
+                                  <span className="ml-auto shrink-0 font-semibold text-rose-700 text-[10px] bg-rose-100 px-2 py-0.5 rounded-md">
+                                    Jawaban Kamu
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
 
                       <div className="grid sm:grid-cols-2 gap-2 text-xs mb-3">
                         <div
@@ -365,7 +418,9 @@ const UserTryoutDashboardPage = () => {
                             Jawaban Anda:
                           </span>
                           <span className="text-sm font-bold">
-                            {d.jawaban_user ? `${d.jawaban_user}` : "(Tidak Dijawab)"}
+                            {d.jawaban_user
+                              ? `${d.jawaban_user}`
+                              : "(Tidak Dijawab)"}
                           </span>
                         </div>
 
@@ -393,7 +448,8 @@ const UserTryoutDashboardPage = () => {
                       )}
                     </div>
                   );
-                })}
+                })
+              )}
             </div>
 
             <div className="p-4 border-t border-slate-100 bg-white flex justify-end">

@@ -608,7 +608,12 @@ const buildTryoutAnswerSummary = (details = []) => {
   const totalQuestions = Array.isArray(details) ? details.length : 0;
   const correctCount = (details || []).reduce((acc, item) => {
     if (!item) return acc;
-    if (item.jawaban_user && item.jawaban_user === item.jawaban_benar) {
+    if (
+      item.jawaban_user &&
+      item.jawaban_benar &&
+      item.jawaban_user.trim().toUpperCase() ===
+        item.jawaban_benar.trim().toUpperCase()
+    ) {
       return acc + 1;
     }
     return acc;
@@ -630,12 +635,118 @@ const buildTryoutAnswerSummary = (details = []) => {
 
 const parseTryoutDetails = (rawDetails) => {
   if (!rawDetails) return [];
-  try {
-    const parsed = JSON.parse(rawDetails);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
+  if (Array.isArray(rawDetails)) return rawDetails;
+  if (typeof rawDetails === "object") {
+    if (Array.isArray(rawDetails.details)) return rawDetails.details;
+    if (Array.isArray(rawDetails.answers)) return rawDetails.answers;
     return [];
   }
+  if (typeof rawDetails === "string") {
+    try {
+      const parsed = JSON.parse(rawDetails);
+      if (Array.isArray(parsed)) return parsed;
+      if (parsed && typeof parsed === "object") {
+        if (Array.isArray(parsed.details)) return parsed.details;
+        if (Array.isArray(parsed.answers)) return parsed.answers;
+      }
+      return [];
+    } catch (err) {
+      return [];
+    }
+  }
+  return [];
+};
+
+const getCompleteTryoutDetails = async (tryoutId, rawDetails) => {
+  const details = parseTryoutDetails(rawDetails);
+
+  // Fetch all questions for this tryout from database
+  const [soalRows] = await pool.query(
+    `SELECT ts.id as ts_id, b.id as bank_soal_id, b.soal, b.pembahasan,
+            o.label, o.konten, o.skor, o.benar
+     FROM tryout_soal ts
+     JOIN bank_soal b ON ts.bank_soal_id = b.id
+     LEFT JOIN opsi_jawaban o ON b.id = o.bank_soal_id
+     WHERE ts.tryout_id = ?
+     ORDER BY ts.id ASC, o.label ASC`,
+    [tryoutId]
+  );
+
+  if (!soalRows || soalRows.length === 0) {
+    return details;
+  }
+
+  const perQuestion = new Map();
+  for (const row of soalRows) {
+    if (!perQuestion.has(row.bank_soal_id)) {
+      perQuestion.set(row.bank_soal_id, {
+        bank_soal_id: row.bank_soal_id,
+        soal: row.soal,
+        pembahasan: row.pembahasan,
+        opsi: [],
+        jawaban_benar: null,
+      });
+    }
+    const q = perQuestion.get(row.bank_soal_id);
+    if (row.label) {
+      q.opsi.push({
+        label: row.label,
+        konten: row.konten,
+        skor: row.skor,
+        benar: !!row.benar,
+      });
+      if (row.benar) {
+        q.jawaban_benar = row.label;
+      }
+    }
+  }
+
+  // Create answers mapping from existing details
+  const answersMap = new Map();
+  if (Array.isArray(details)) {
+    details.forEach((d, idx) => {
+      if (d && typeof d === "object") {
+        const key = d.bank_soal_id || d.soal_id || d.id;
+        const answer = d.jawaban_user || d.jawaban || d.answer || null;
+        if (key) {
+          answersMap.set(Number(key), answer);
+        } else {
+          answersMap.set(`idx_${idx}`, answer);
+        }
+      }
+    });
+  }
+
+  let index = 0;
+  const completeList = Array.from(perQuestion.values()).map((q) => {
+    let userAnswer = answersMap.get(Number(q.bank_soal_id));
+    if (userAnswer === undefined) {
+      userAnswer = answersMap.get(`idx_${index}`) || null;
+    }
+    const matchedExisting = details.find(
+      (d) => d && (d.bank_soal_id === q.bank_soal_id || d.soal === q.soal)
+    );
+    if (matchedExisting && matchedExisting.jawaban_user) {
+      userAnswer = matchedExisting.jawaban_user;
+    }
+
+    index++;
+    return {
+      bank_soal_id: q.bank_soal_id,
+      soal: q.soal,
+      pembahasan:
+        q.pembahasan || (matchedExisting ? matchedExisting.pembahasan : null),
+      opsi: q.opsi.map((o) => ({
+        label: o.label,
+        konten: o.konten,
+      })),
+      jawaban_user: userAnswer,
+      jawaban_benar:
+        q.jawaban_benar || (matchedExisting ? matchedExisting.jawaban_benar : null),
+    };
+  });
+
+  return completeList;
 };
 
 const getTryoutMaxScore = async (tryoutId) => {
@@ -2004,25 +2115,30 @@ app.get(
          ORDER BY created_at DESC`,
         [id, req.user.id]
       );
-      const attemptsWithSummary = attempts.map((attempt) => {
-        const parsedDetails = parseTryoutDetails(attempt.details);
-        const summary = buildTryoutAnswerSummary(parsedDetails);
-        const normalizedMaxScore = currentMaxScore;
-        const normalizedPercentage = normalizedMaxScore
-          ? (Number(attempt.total_score || 0) / normalizedMaxScore) * 100
-          : 0;
-        return {
-          ...attempt,
-          details: undefined,
-          max_score: normalizedMaxScore,
-          percentage: normalizedPercentage.toFixed(2),
-          total_questions: summary.totalQuestions,
-          answered_count: summary.answeredCount,
-          correct_count: summary.correctCount,
-          incorrect_count: summary.incorrectCount,
-          unanswered_count: summary.unansweredCount,
-        };
-      });
+      const attemptsWithSummary = await Promise.all(
+        attempts.map(async (attempt) => {
+          const parsedDetails = await getCompleteTryoutDetails(
+            id,
+            attempt.details
+          );
+          const summary = buildTryoutAnswerSummary(parsedDetails);
+          const normalizedMaxScore = currentMaxScore;
+          const normalizedPercentage = normalizedMaxScore
+            ? (Number(attempt.total_score || 0) / normalizedMaxScore) * 100
+            : 0;
+          return {
+            ...attempt,
+            details: undefined,
+            max_score: normalizedMaxScore,
+            percentage: normalizedPercentage.toFixed(2),
+            total_questions: summary.totalQuestions,
+            answered_count: summary.answeredCount,
+            correct_count: summary.correctCount,
+            incorrect_count: summary.incorrectCount,
+            unanswered_count: summary.unansweredCount,
+          };
+        })
+      );
 
       const [allAttempts] = await pool.query(
         `SELECT h.id, h.user_id, u.name, h.total_score
@@ -2085,7 +2201,7 @@ app.get(
       }
       const row = rows[0];
       const currentMaxScore = await getTryoutMaxScore(id);
-      const details = parseTryoutDetails(row.details);
+      const details = await getCompleteTryoutDetails(id, row.details);
       const summary = buildTryoutAnswerSummary(details);
       const normalizedPercentage = currentMaxScore
         ? (Number(row.total_score || 0) / currentMaxScore) * 100
@@ -2128,8 +2244,12 @@ app.get(
       );
       const results = await Promise.all(
         rows.map(async (row) => {
-          const currentMaxScore = (await getTryoutMaxScore(row.tryout_id)) || row.max_score;
-          const parsedDetails = parseTryoutDetails(row.details);
+          const currentMaxScore =
+            (await getTryoutMaxScore(row.tryout_id)) || row.max_score;
+          const parsedDetails = await getCompleteTryoutDetails(
+            row.tryout_id,
+            row.details
+          );
           const summary = buildTryoutAnswerSummary(parsedDetails);
           const normalizedPercentage = currentMaxScore
             ? (Number(row.total_score || 0) / currentMaxScore) * 100
@@ -2180,8 +2300,12 @@ app.get(
         return res.status(404).json({ message: "Hasil tidak ditemukan" });
       }
       const row = rows[0];
-      const currentMaxScore = (await getTryoutMaxScore(row.tryout_id)) || row.max_score;
-      const details = parseTryoutDetails(row.details);
+      const currentMaxScore =
+        (await getTryoutMaxScore(row.tryout_id)) || row.max_score;
+      const details = await getCompleteTryoutDetails(
+        row.tryout_id,
+        row.details
+      );
       const summary = buildTryoutAnswerSummary(details);
       const normalizedPercentage = currentMaxScore
         ? (Number(row.total_score || 0) / currentMaxScore) * 100

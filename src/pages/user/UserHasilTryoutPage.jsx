@@ -106,9 +106,9 @@ const UserHasilTryoutPage = () => {
   const avgScore =
     totalDikerjakan > 0
       ? (
-          hasilList.reduce((acc, curr) => acc + Number(curr.percentage || 0), 0) /
-          totalDikerjakan
-        ).toFixed(1)
+        hasilList.reduce((acc, curr) => acc + Number(curr.percentage || 0), 0) /
+        totalDikerjakan
+      ).toFixed(1)
       : "0";
 
   return (
@@ -210,33 +210,30 @@ const UserHasilTryoutPage = () => {
             <button
               type="button"
               onClick={() => setStatusFilter("all")}
-              className={`px-3 py-1.5 rounded-lg transition ${
-                statusFilter === "all"
+              className={`px-3 py-1.5 rounded-lg transition ${statusFilter === "all"
                   ? "bg-white text-slate-900 shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
-              }`}
+                }`}
             >
               Semua ({hasilList.length})
             </button>
             <button
               type="button"
               onClick={() => setStatusFilter("lulus")}
-              className={`px-3 py-1.5 rounded-lg transition ${
-                statusFilter === "lulus"
+              className={`px-3 py-1.5 rounded-lg transition ${statusFilter === "lulus"
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "text-slate-600 hover:text-emerald-700"
-              }`}
+                }`}
             >
               Lulus ({totalLulus})
             </button>
             <button
               type="button"
               onClick={() => setStatusFilter("tidak_lulus")}
-              className={`px-3 py-1.5 rounded-lg transition ${
-                statusFilter === "tidak_lulus"
+              className={`px-3 py-1.5 rounded-lg transition ${statusFilter === "tidak_lulus"
                   ? "bg-rose-600 text-white shadow-sm"
                   : "text-slate-600 hover:text-rose-700"
-              }`}
+                }`}
             >
               Belum Lulus ({totalBelumLulus})
             </button>
@@ -297,11 +294,10 @@ const UserHasilTryoutPage = () => {
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
                     <span
-                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                        item.lulus
+                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${item.lulus
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           : "bg-rose-50 text-rose-700 border border-rose-200"
-                      }`}
+                        }`}
                     >
                       {item.lulus ? (
                         <>
@@ -384,7 +380,7 @@ const UserHasilTryoutPage = () => {
 
       {pembahasanDetail && !pembahasanLoading && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm !mt-0"
           onClick={closePembahasan}
         >
           <div
@@ -418,11 +414,10 @@ const UserHasilTryoutPage = () => {
                   {Number(pembahasanDetail.percentage).toFixed(1)}%)
                 </span>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                    pembahasanDetail.lulus
+                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${pembahasanDetail.lulus
                       ? "bg-emerald-100 text-emerald-800"
                       : "bg-rose-100 text-rose-800"
-                  }`}
+                    }`}
                 >
                   {pembahasanDetail.lulus ? "Lulus Passing Grade" : "Belum Lulus"}
                 </span>
@@ -437,33 +432,30 @@ const UserHasilTryoutPage = () => {
                 <button
                   type="button"
                   onClick={() => setModalFilter("all")}
-                  className={`px-2.5 py-1 rounded-md transition ${
-                    modalFilter === "all"
+                  className={`px-2.5 py-1 rounded-md transition ${modalFilter === "all"
                       ? "bg-white text-slate-900 shadow-xs font-semibold"
                       : "text-slate-600 hover:text-slate-900"
-                  }`}
+                    }`}
                 >
                   Semua
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalFilter("benar")}
-                  className={`px-2.5 py-1 rounded-md transition ${
-                    modalFilter === "benar"
+                  className={`px-2.5 py-1 rounded-md transition ${modalFilter === "benar"
                       ? "bg-emerald-600 text-white shadow-xs font-semibold"
                       : "text-slate-600 hover:text-emerald-700"
-                  }`}
+                    }`}
                 >
                   Benar
                 </button>
                 <button
                   type="button"
                   onClick={() => setModalFilter("salah")}
-                  className={`px-2.5 py-1 rounded-md transition ${
-                    modalFilter === "salah"
+                  className={`px-2.5 py-1 rounded-md transition ${modalFilter === "salah"
                       ? "bg-rose-600 text-white shadow-xs font-semibold"
                       : "text-slate-600 hover:text-rose-700"
-                  }`}
+                    }`}
                 >
                   Salah
                 </button>
@@ -472,19 +464,35 @@ const UserHasilTryoutPage = () => {
 
             {/* Modal Questions list */}
             <div className="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4 bg-slate-50/50">
-              {Array.isArray(pembahasanDetail.details) &&
-                pembahasanDetail.details
-                  .filter((d) => {
-                    const isBenar =
-                      d.jawaban_user &&
-                      d.jawaban_benar &&
-                      d.jawaban_user.trim().toUpperCase() ===
-                        d.jawaban_benar.trim().toUpperCase();
-                    if (modalFilter === "benar") return isBenar;
-                    if (modalFilter === "salah") return !isBenar;
-                    return true;
-                  })
-                  .map((d, idx) => {
+              {!Array.isArray(pembahasanDetail.details) ||
+              pembahasanDetail.details.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-slate-100 p-8 text-center text-sm text-slate-500">
+                  Tidak ada data soal untuk pembahasan ini.
+                </div>
+              ) : (
+                (() => {
+                  const filteredQuestions = pembahasanDetail.details.filter(
+                    (d) => {
+                      const isBenar =
+                        d.jawaban_user &&
+                        d.jawaban_benar &&
+                        d.jawaban_user.trim().toUpperCase() ===
+                          d.jawaban_benar.trim().toUpperCase();
+                      if (modalFilter === "benar") return isBenar;
+                      if (modalFilter === "salah") return !isBenar;
+                      return true;
+                    }
+                  );
+
+                  if (filteredQuestions.length === 0) {
+                    return (
+                      <div className="bg-white rounded-2xl border border-slate-100 p-8 text-center text-sm text-slate-500">
+                        Tidak ada soal yang sesuai dengan filter ({modalFilter}).
+                      </div>
+                    );
+                  }
+
+                  return filteredQuestions.map((d, idx) => {
                     const isBenar =
                       d.jawaban_user &&
                       d.jawaban_benar &&
@@ -529,6 +537,55 @@ const UserHasilTryoutPage = () => {
                           dangerouslySetInnerHTML={{ __html: d.soal }}
                         />
 
+                        {/* Options */}
+                        {Array.isArray(d.opsi) && d.opsi.length > 0 && (
+                          <div className="space-y-1.5 mb-3">
+                            {d.opsi.map((o) => {
+                              const isUserChoice =
+                                d.jawaban_user &&
+                                d.jawaban_user.trim().toUpperCase() ===
+                                  o.label.trim().toUpperCase();
+                              const isCorrectChoice =
+                                d.jawaban_benar &&
+                                d.jawaban_benar.trim().toUpperCase() ===
+                                  o.label.trim().toUpperCase();
+
+                              return (
+                                <div
+                                  key={o.label}
+                                  className={`px-3 py-2 rounded-xl text-xs flex items-start gap-2 border ${
+                                    isCorrectChoice
+                                      ? "bg-emerald-50/80 border-emerald-300 text-emerald-950 font-medium"
+                                      : isUserChoice
+                                      ? "bg-rose-50/80 border-rose-300 text-rose-950"
+                                      : "bg-slate-50 border-slate-100 text-slate-700"
+                                  }`}
+                                >
+                                  <span className="font-bold shrink-0">
+                                    {o.label}.
+                                  </span>
+                                  <div
+                                    className="prose prose-xs max-w-none [&_p]:m-0 [&_p]:inline flex-1"
+                                    dangerouslySetInnerHTML={{
+                                      __html: o.konten,
+                                    }}
+                                  />
+                                  {isCorrectChoice && (
+                                    <span className="ml-auto shrink-0 font-semibold text-emerald-700 text-[10px] bg-emerald-100 px-2 py-0.5 rounded-md">
+                                      Kunci Benar
+                                    </span>
+                                  )}
+                                  {isUserChoice && !isCorrectChoice && (
+                                    <span className="ml-auto shrink-0 font-semibold text-rose-700 text-[10px] bg-rose-100 px-2 py-0.5 rounded-md">
+                                      Jawaban Kamu
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+
                         {/* Answers comparison */}
                         <div className="grid sm:grid-cols-2 gap-2 text-xs mb-3">
                           <div
@@ -542,7 +599,9 @@ const UserHasilTryoutPage = () => {
                               Jawaban Anda:
                             </span>
                             <span className="text-sm font-bold">
-                              {d.jawaban_user ? `${d.jawaban_user}` : "(Tidak Dijawab)"}
+                              {d.jawaban_user
+                                ? `${d.jawaban_user}`
+                                : "(Tidak Dijawab)"}
                             </span>
                           </div>
 
@@ -575,7 +634,9 @@ const UserHasilTryoutPage = () => {
                         )}
                       </div>
                     );
-                  })}
+                  });
+                })()
+              )}
             </div>
 
             {/* Modal Footer */}
