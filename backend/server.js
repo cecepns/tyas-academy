@@ -1307,6 +1307,12 @@ app.put(
         if (req.file) {
           coverClause = ", cover_image = ?";
           params.push(`/uploads-tyasacademy/${req.file.filename}`);
+        } else if (
+          req.body.remove_cover === "true" ||
+          req.body.remove_cover === "1" ||
+          req.body.remove_cover === true
+        ) {
+          coverClause = ", cover_image = NULL";
         }
         params.push(id);
         await conn.query(
@@ -2126,8 +2132,14 @@ app.get(
           const normalizedPercentage = normalizedMaxScore
             ? (Number(attempt.total_score || 0) / normalizedMaxScore) * 100
             : 0;
+          const isLulus = Boolean(
+            attempt.lulus &&
+              Number(attempt.total_score || 0) > 0 &&
+              summary.correctCount > 0
+          );
           return {
             ...attempt,
+            lulus: isLulus,
             details: undefined,
             max_score: normalizedMaxScore,
             percentage: normalizedPercentage.toFixed(2),
@@ -2206,12 +2218,17 @@ app.get(
       const normalizedPercentage = currentMaxScore
         ? (Number(row.total_score || 0) / currentMaxScore) * 100
         : 0;
+      const isLulus = Boolean(
+        row.lulus &&
+          Number(row.total_score || 0) > 0 &&
+          summary.correctCount > 0
+      );
       res.json({
         id: row.id,
         total_score: row.total_score,
         max_score: currentMaxScore,
         percentage: normalizedPercentage.toFixed(2),
-        lulus: !!row.lulus,
+        lulus: isLulus,
         total_questions: summary.totalQuestions,
         answered_count: summary.answeredCount,
         correct_count: summary.correctCount,
@@ -2254,6 +2271,11 @@ app.get(
           const normalizedPercentage = currentMaxScore
             ? (Number(row.total_score || 0) / currentMaxScore) * 100
             : 0;
+          const isLulus = Boolean(
+            row.lulus &&
+              Number(row.total_score || 0) > 0 &&
+              summary.correctCount > 0
+          );
           return {
             id: row.id,
             tryout_id: row.tryout_id,
@@ -2263,7 +2285,7 @@ app.get(
             total_score: row.total_score,
             max_score: currentMaxScore,
             percentage: normalizedPercentage.toFixed(2),
-            lulus: !!row.lulus,
+            lulus: isLulus,
             total_questions: summary.totalQuestions,
             answered_count: summary.answeredCount,
             correct_count: summary.correctCount,
@@ -2310,6 +2332,11 @@ app.get(
       const normalizedPercentage = currentMaxScore
         ? (Number(row.total_score || 0) / currentMaxScore) * 100
         : 0;
+      const isLulus = Boolean(
+        row.lulus &&
+          Number(row.total_score || 0) > 0 &&
+          summary.correctCount > 0
+      );
       res.json({
         id: row.id,
         tryout_id: row.tryout_id,
@@ -2319,7 +2346,7 @@ app.get(
         total_score: row.total_score,
         max_score: currentMaxScore,
         percentage: normalizedPercentage.toFixed(2),
-        lulus: !!row.lulus,
+        lulus: isLulus,
         total_questions: summary.totalQuestions,
         answered_count: summary.answeredCount,
         correct_count: summary.correctCount,
@@ -2405,7 +2432,9 @@ app.post(
         return acc + maxOptionScore;
       }, 0);
       const percentage = maxScore ? (totalScore / maxScore) * 100 : 0;
-      const lulus = totalScore >= passingGrade;
+      const pg = passingGrade != null ? Number(passingGrade) : null;
+      const lulus =
+        pg !== null && pg > 0 ? totalScore > 0 && totalScore >= pg : false;
       const details = Array.from(perQuestion.values()).map((q) => {
         const correct = q.opsi.find((o) => o.benar);
         return {

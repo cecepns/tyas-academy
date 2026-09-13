@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
@@ -19,6 +19,8 @@ const PaketPage = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState(null);
+  const [removeCover, setRemoveCover] = useState(false);
+  const fileInputRef = useRef(null);
   const [bimbelOptions, setBimbelOptions] = useState([]);
   const [materiOptions, setMateriOptions] = useState([]);
   const [tryoutOptions, setTryoutOptions] = useState([]);
@@ -104,6 +106,8 @@ const PaketPage = () => {
     setEditingId(null);
     setCoverFile(null);
     setCoverPreview(null);
+    setRemoveCover(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
     reset({
       nama_paket: "",
       slug: "",
@@ -124,6 +128,8 @@ const PaketPage = () => {
       setEditingId(id);
       setCoverFile(null);
       setCoverPreview(data.cover_image || null);
+      setRemoveCover(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       reset({
         nama_paket: data.nama_paket,
         slug: data.slug,
@@ -151,7 +157,11 @@ const PaketPage = () => {
       formData.append("bimbel_ids", JSON.stringify(values.bimbel_ids || []));
       formData.append("materi_ids", JSON.stringify(values.materi_ids || []));
       formData.append("tryout_ids", JSON.stringify(values.tryout_ids || []));
-      if (coverFile) formData.append("cover_image", coverFile);
+      if (coverFile) {
+        formData.append("cover_image", coverFile);
+      } else if (removeCover) {
+        formData.append("remove_cover", "true");
+      }
       if (editingId) {
         await api.put(`/admin/paket/${editingId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -167,6 +177,8 @@ const PaketPage = () => {
       setEditingId(null);
       setCoverFile(null);
       setCoverPreview(null);
+      setRemoveCover(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       reset({
         nama_paket: "",
         slug: "",
@@ -422,19 +434,44 @@ const PaketPage = () => {
                       Cover Image (opsional)
                     </label>
                     <input
+                      ref={fileInputRef}
                       type="file"
                       accept="image/*"
-                      onChange={(e) =>
-                        setCoverFile(e.target.files?.[0] || null)
-                      }
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        setCoverFile(file);
+                        setRemoveCover(false);
+                        if (file) {
+                          setCoverPreview(URL.createObjectURL(file));
+                        }
+                      }}
                       className="block w-full text-[11px] text-slate-500 file:mr-2 file:px-2 file:py-1.5 file:rounded file:border-0 file:bg-slate-100 file:text-slate-700"
                     />
                     {coverPreview && (
-                      <img
-                        src={`${fileBase}${coverPreview}`}
-                        alt="Cover paket"
-                        className="mt-2 h-20 rounded border border-slate-100 object-cover"
-                      />
+                      <div className="mt-2 flex items-start gap-3">
+                        <img
+                          src={
+                            coverPreview.startsWith("blob:")
+                              ? coverPreview
+                              : `${fileBase}${coverPreview}`
+                          }
+                          alt="Cover paket"
+                          className="h-20 w-32 rounded-lg border border-slate-200 object-cover shadow-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCoverFile(null);
+                            setCoverPreview(null);
+                            setRemoveCover(true);
+                            if (fileInputRef.current) fileInputRef.current.value = "";
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-rose-200 text-rose-600 bg-rose-50 hover:bg-rose-100 text-[11px] font-medium transition"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          Hapus Gambar
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
